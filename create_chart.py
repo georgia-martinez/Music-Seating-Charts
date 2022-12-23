@@ -27,13 +27,13 @@ def get_points(radius, step_size):
 
     return x, y, theta
 
-def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
+def create_chart(radii, n_seats, rows, chart_title, show_podium=True):
     """
     Displays a seating chart. The length of radii and n_seats should be the same.
 
     @param radii: list specifying the radius of each semicircle
     @param n_seats: number of seats per row
-    @param seating: a dictionary with the keys [1, 2, 3] and values containing the names of the people in each row (goes from right to left)
+    @param rows: a dictionary with the keys [0, 1, 2, ..., etc] and values containing the names of the people in each row (goes from right to left)
     @param chart_title: name of the chart that will be displayed at the top
     """
 
@@ -50,7 +50,7 @@ def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
         ax.plot(x1, y1, "-k")
 
         # Add names to the points
-        names = list(seating.values())[i]
+        names = list(rows.values())[i]
 
         for j, (x, y, theta) in enumerate(zip(x_vals, y_vals, theta_vals)):
             N = 1
@@ -75,7 +75,7 @@ def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
     plt.title(chart_title, fontweight="bold")
 
     plt.axis("equal")
-    plt.axis('off')
+    plt.axis("off")
     plt.tight_layout()
 
     # Save the image
@@ -83,15 +83,13 @@ def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
     plt.savefig(os.path.join(UPLOAD_FOLDER, file_name))    
 
     # Save data to JSON
-    data = {}
-    data["radii"] = radii
-    data["n_seats"] = n_seats
-
-    for key, val in seating.items():
-        data[f"row_{key+1}"] = val
-
-    data["chart_title"] = chart_title
-    data["show_podium"] = show_podium
+    data = {
+        "radii": radii,
+        "n_seats": n_seats,
+        "rows": rows,
+        "chart_title": chart_title,
+        "show_podium": show_podium
+    }
 
     save_chart(UPLOAD_FOLDER, chart_title, data)
 
@@ -105,33 +103,5 @@ def save_chart(path, file_name, data):
 
 def load_chart(data_path):
     with open(data_path, "r") as json_file:
-        json.load(json_file)
-
-def test():    
-    # Seating charts for each piece (goes from right to left in the semicircle)
-    dukas = {
-        0: ["Liv", "Maria", "Emory", "Ian", "Henry", "Nell"],
-        1: ["Aaron", "Alex", "Nick", "Rachel", "Gus", "Emma", "Ariana", "Jacob", "Dan"],
-        2: ["Andrew", "Nate", "Michael", "Roland", "Noah", "Matt", "Arielle", "Henry", "Jordan"]
-    }
-
-    whitacre = {
-        0: ["Emory", "Henry", "Ian", "Liv", "Maria", "Nell"],
-        1: ["Georgia", "Aaron", "Alex", "Nick", "Emma", "Rachel", "Gus", "Ariana", "Jacob"],
-        2: ["Andrew", "Nate", "Michael", "Roland", "Noah", "Matt", "Arielle", "Henry", "Jordan"]
-    }
-
-    holst = {
-        0: ["Henry", "Emory", "Maria", "Liv", "Ian", "Nell"],
-        1: ["Aaron", "Alex", "Nick", "Emma", "Dan", "Rachel", "Ariana", "Gus", "Jacob"],
-        2: ["Andrew", "Nate", "Michael", "Roland", "Noah", "Henry", "Jordan", "Matt", "Arielle"]
-    }
-
-    radii = [3, 6, 9]
-    n_seats = [6, 9, 9] 
-
-    create_chart(radii, n_seats, dukas, "Fanfare from La Peri")
-    # show_chart(radii, n_seats, holst, "First Suite in Eb")
-
-if __name__ == "__main__":
-    test()
+        d = json.load(json_file)
+        create_chart(d["radii"], d["n_seats"], d["rows"], d["chart_title"], d["show_podium"])
