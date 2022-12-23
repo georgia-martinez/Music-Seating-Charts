@@ -1,7 +1,13 @@
 import numpy as np
 import math
+import os 
+import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+
+matplotlib.use("Agg") # prevents thread issues with matplotlib and flask
+
+UPLOAD_FOLDER = 'static/uploads/'
 
 def get_points(radius, step_size):
     """
@@ -70,10 +76,10 @@ def show_chart(radii, n_seats, seating, piece_name, show_podium=True):
     plt.axis('off')
     plt.tight_layout()
 
-    plt.show()
+    file_name = "seating_chart.png"
+    plt.savefig(os.path.join(UPLOAD_FOLDER, file_name))
 
-if __name__ == "__main__":
-    
+def test():    
     # Seating charts for each piece (goes from right to left in the semicircle)
     dukas = {
         0: ["Liv", "Maria", "Emory", "Ian", "Henry", "Nell"],

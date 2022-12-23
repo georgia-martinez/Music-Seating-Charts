@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block head %}
+
+{% endblock %}
+
+{% block body %}
+<!-- https://www.geeksforgeeks.org/flask-form-submission-without-page-reload/ -->
+
+<form method="post" id="todo-form">
+    <input type="text" name="todo" id="todo">
+    <button type="submit">submit</button>
+</form>
+
+<!--Jquery Cdn -->
+<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+
+<script type="text/javascript">
+    $(document).on('submit','#todo-form',function(e) {
+        e.preventDefault();
+        $.ajax({
+            type:"POST",
+            url:"/",
+            data:{
+                todo:$("#todo").val()
+            }
+            // ,
+            // success:function()
+            // {
+            //     alert("saved");
+            // }
+        })
+    });
+</script>
+
+{% endblock %}
