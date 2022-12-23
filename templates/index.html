@@ -7,7 +7,9 @@
 {% block body %}
 <!-- https://www.geeksforgeeks.org/flask-form-submission-without-page-reload/ -->
 
-<form method="post" id="todo-form">
+<form method="POST" enctype="multipart/form-data" action="/">
+    <input type="file" id="myFile" name="uploaded-file" accept=".json">
+    <input type="submit" name="upload_file" value="Upload file">
     <input type="submit" name="create_chart">
 </form>
 

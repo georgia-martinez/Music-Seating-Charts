@@ -93,15 +93,19 @@ def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
     data["chart_title"] = chart_title
     data["show_podium"] = show_podium
 
-    save_to_json(UPLOAD_FOLDER, chart_title, data)
+    save_chart(UPLOAD_FOLDER, chart_title, data)
 
-def save_to_json(path, file_name, data):
+def save_chart(path, file_name, data):
 
     file_name = "_".join(file_name.split())
     file_path = os.path.join(path, file_name)
 
     with open(f"{file_path}.json", "w") as json_file:
         json.dump(data, json_file, indent=2)
+
+def load_chart(data_path):
+    with open(data_path, "r") as json_file:
+        json.load(json_file)
 
 def test():    
     # Seating charts for each piece (goes from right to left in the semicircle)
