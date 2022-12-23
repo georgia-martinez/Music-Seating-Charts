@@ -4,6 +4,7 @@ import os
 import matplotlib
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
+import json
 
 matplotlib.use("Agg") # prevents thread issues with matplotlib and flask
 
@@ -19,20 +20,21 @@ def get_points(radius, step_size):
     """
 
     theta = np.linspace(np.pi/2, 3*np.pi/2, step_size, endpoint=True)
+    # theta = np.linspace(-np.pi/2, -3*np.pi/2, step_size, endpoint=True)
 
     x = [radius * np.sin(t) for t in theta]
     y = [radius * np.cos(t) for t in theta]
 
     return x, y, theta
 
-def show_chart(radii, n_seats, seating, piece_name, show_podium=True):
+def create_chart(radii, n_seats, seating, chart_title, show_podium=True):
     """
     Displays a seating chart. The length of radii and n_seats should be the same.
 
     @param radii: list specifying the radius of each semicircle
     @param n_seats: number of seats per row
     @param seating: a dictionary with the keys [1, 2, 3] and values containing the names of the people in each row (goes from right to left)
-    @param piece_name: name of the piece that will be displayed at the top
+    @param chart_title: name of the chart that will be displayed at the top
     """
 
     assert len(radii) == len(n_seats)
@@ -69,15 +71,37 @@ def show_chart(radii, n_seats, seating, piece_name, show_podium=True):
 
         text =  plt.text(0, 0, "Podium", ha="center", va="center")
 
-    # Show the plot
-    plt.title(piece_name, fontweight="bold")
+    # Formatting
+    plt.title(chart_title, fontweight="bold")
 
     plt.axis("equal")
     plt.axis('off')
     plt.tight_layout()
 
+    # Save the image
     file_name = "seating_chart.png"
-    plt.savefig(os.path.join(UPLOAD_FOLDER, file_name))
+    plt.savefig(os.path.join(UPLOAD_FOLDER, file_name))    
+
+    # Save data to JSON
+    data = {}
+    data["radii"] = radii
+    data["n_seats"] = n_seats
+
+    for key, val in seating.items():
+        data[f"row_{key+1}"] = val
+
+    data["chart_title"] = chart_title
+    data["show_podium"] = show_podium
+
+    save_to_json(UPLOAD_FOLDER, chart_title, data)
+
+def save_to_json(path, file_name, data):
+
+    file_name = "_".join(file_name.split())
+    file_path = os.path.join(path, file_name)
+
+    with open(f"{file_path}.json", "w") as json_file:
+        json.dump(data, json_file, indent=2)
 
 def test():    
     # Seating charts for each piece (goes from right to left in the semicircle)
@@ -102,5 +126,8 @@ def test():
     radii = [3, 6, 9]
     n_seats = [6, 9, 9] 
 
-    show_chart(radii, n_seats, dukas, "Fanfare from La Peri")
+    create_chart(radii, n_seats, dukas, "Fanfare from La Peri")
     # show_chart(radii, n_seats, holst, "First Suite in Eb")
+
+if __name__ == "__main__":
+    test()

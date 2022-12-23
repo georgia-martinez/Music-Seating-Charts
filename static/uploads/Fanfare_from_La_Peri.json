@@ -1,0 +1,44 @@
+{
+  "radii": [
+    3,
+    6,
+    9
+  ],
+  "n_seats": [
+    6,
+    9,
+    9
+  ],
+  "row_1": [
+    "Liv",
+    "Maria",
+    "Emory",
+    "Ian",
+    "Henry",
+    "Nell"
+  ],
+  "row_2": [
+    "Aaron",
+    "Alex",
+    "Nick",
+    "Rachel",
+    "Gus",
+    "Emma",
+    "Ariana",
+    "Jacob",
+    "Dan"
+  ],
+  "row_3": [
+    "Andrew",
+    "Nate",
+    "Michael",
+    "Roland",
+    "Noah",
+    "Matt",
+    "Arielle",
+    "Henry",
+    "Jordan"
+  ],
+  "chart_title": "Fanfare from La Peri",
+  "show_podium": true
+}
