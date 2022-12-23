@@ -8,12 +8,22 @@
 <!-- https://www.geeksforgeeks.org/flask-form-submission-without-page-reload/ -->
 
 <form method="post" id="todo-form">
-    <input type="text" name="todo" id="todo">
-    <button type="submit">submit</button>
+    <input type="submit" name="create_chart">
 </form>
 
+{% if file_url %}
+    <img src="{{ file_url }}">
+{% endif %}
+
+<!-- <script>
+    if ( window.history.replaceState ) {
+        window.history.replaceState( null, null, window.location.href );
+    }
+</script> -->
+
+
 <!--Jquery Cdn -->
-<script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
 
 <script type="text/javascript">
     $(document).on('submit','#todo-form',function(e) {
@@ -31,6 +41,6 @@
             // }
         })
     });
-</script>
+</script> -->
 
 {% endblock %}

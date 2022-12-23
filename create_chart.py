@@ -7,7 +7,7 @@ from matplotlib.patches import Rectangle
 
 matplotlib.use("Agg") # prevents thread issues with matplotlib and flask
 
-UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = os.path.join("static", "uploads")
 
 def get_points(radius, step_size):
     """
@@ -103,3 +103,4 @@ def test():
     n_seats = [6, 9, 9] 
 
     show_chart(radii, n_seats, dukas, "Fanfare from La Peri")
+    # show_chart(radii, n_seats, holst, "First Suite in Eb")
