@@ -1,9 +1,9 @@
 function linspace(start, stop, num) {
-    var arr = []
+    let arr = []
 
-    var step = (start - stop) / (num - 1)
+    let step = (start - stop) / (num - 1)
 
-    for (var i = 0; i < num; i++) {
+    for (let i = 0; i < num; i++) {
       arr.push(start + (step * i))
     }
     return arr
@@ -11,25 +11,25 @@ function linspace(start, stop, num) {
 
 function getPoints(radius, stepSize) {
 
-    var theta = linspace(0, Math.PI, stepSize)
+    let theta = linspace(0, Math.PI, stepSize)
 
-    var x = theta.map(t => radius * Math.cos(t))
-    var y = theta.map(t => radius * Math.sin(t))
+    let x = theta.map(t => radius * Math.cos(t))
+    let y = theta.map(t => radius * Math.sin(t))
 
-    return [x, y]
+    return [x, y, theta]
 }
 
 TESTER = document.getElementById('tester')
 
 function getTrace(radius, stepSize, line=true) {
-    points = getPoints(radius, stepSize)
+    let points = getPoints(radius, stepSize)
 
-    var x = points[0]
-    var y = points[1] 
+    let x = points[0]
+    let y = points[1] 
 
-    var mode = line ? "lines" : "markers";
+    let mode = line ? "lines" : "markers";
 
-    var trace = {
+    let trace = {
         x: x, 
         y: y,
         mode: mode
@@ -38,22 +38,11 @@ function getTrace(radius, stepSize, line=true) {
     return trace
 }
 
-// function addRow() {
-//     if(radii.length == 0) {
-//         radii.push(3);
-//     } else {
-//         radii.push(radii.at(-1) + 3);
-//     }
-
-//     numSeats.push(-1)
-//     plotSeatingChart()
-// }
-
 function createChart(numSeats) {
     console.log("Create Chart")
 
-    var radii = [3]
-    var x = 3
+    let radii = [3]
+    let x = 3
 
     for(i = 1; i < numSeats.length; i++) {
         x += 3
@@ -63,28 +52,106 @@ function createChart(numSeats) {
     plotSeatingChart(radii, numSeats)
 }
 
+function rotatedSquare(x, y, theta, len) {
+    let l = len/2
+
+    // Bottom right
+    let x0 = x - l
+    let y0 = y - l
+
+    // top left
+    let x1 = x - l
+    let y1 = y + l
+
+    // top right
+    let x2 = x + l
+    let y2 = y + l
+
+    // bottom right
+    let x3 = x + l
+    let y3 = y - l
+
+    let all_x = [x0, x1, x2, x3]
+    let all_y = [y0, y1, y2, y3]
+
+    let rot_x = []
+    let rot_y = []
+
+    for(let i = 0; i < all_x.length; i++) {
+        rot_x.push(rotateX(all_x[i], all_y[i], theta))
+        rot_y.push(rotateY(all_x[i], all_y[i], theta))
+    }
+
+    x0 = rot_x[0]
+    x1 = rot_x[1]
+    x2 = rot_x[2]
+    x3 = rot_x[3]
+
+    y0 = rot_y[0]
+    y1 = rot_y[1]
+    y2 = rot_y[2]
+    y3 = rot_y[3]
+
+    let format = "M "+x0+" "+y0+" L "+x1+" "+y1+" L "+x2+" "+y2+" L " +x3+" "+y3+" Z"
+    return format
+}
+
+function rotateX(x, y, theta) {
+    return x * Math.cos(theta) - y * Math.sin(theta)
+}
+
+function rotateY(x, y, theta) {
+    return x * Math.sin(theta) + y * Math.cos(theta)
+}
+
 function plotSeatingChart(radii, numSeats) {
     console.log("Plot Seating Chart")
 
-    var all_traces = []
+    console.log("numSeats" +numSeats)
+
+    let all_traces = []
+    let shapes = []
 
     for(i = 0; i < radii.length; i++) {
-        r = radii[i]
-        n = numSeats[i]
+        let r = radii[i]
+        let n = numSeats[i]
 
-        if(n != 0) {
-            line = false 
-        } else {
-            line = true
-            n = 1000
+        // Plot a black line for each row
+        let rowLine = getTrace(r, 1000, true) 
+        all_traces.push(rowLine)
+
+        if(n == 0) {
+            continue
         }
 
-        trace = getTrace(r, n, line)
-        all_traces.push(trace)
+        for(j = 0; j < n; j++) {        
+            let points = getPoints(r, n)
+            console.log(points)
+
+            let all_x = points[0]
+            let all_y = points[1] 
+            let all_theta = points[2].map(p => p * (180.0 / Math.PI))
+
+            for(k = 0; k < all_x.length; k++) {
+                let path = rotatedSquare(all_x[k], all_y[k], all_theta[k], 1)
+
+                seat = {
+                    type: "path",
+                    path: path,
+                    fillcolor: "rgb(255, 255, 255)",
+                    line: {
+                      color: "rgb(0, 0, 0)"
+                    }
+                }
+
+                shapes.push(seat)
+            }
+        }
     }
     
-    var layout = {
+    let layout = {
         autosize: true,
+        shapes: shapes
     }
 
     Plotly.newPlot(TESTER, all_traces, layout) 
