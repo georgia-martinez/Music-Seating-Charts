@@ -5,44 +5,27 @@
 {% endblock %}
 
 {% block body %}
-<!-- https://www.geeksforgeeks.org/flask-form-submission-without-page-reload/ -->
 
+<!-- Upload a chart -->
 <form method="POST" enctype="multipart/form-data" action="/">
     <input type="file" id="myFile" name="uploaded-file" accept=".json">
     <input type="submit" name="upload_file" value="Upload file">
-    <input type="submit" name="create_chart">
 </form>
 
+<div class="???" id="row-container">
+    </div>
+
+<button id="add-row">Add Row</button>
+
+<script src="{{ url_for('static', filename='javascript/main.js') }}"></script>
+
+<form method="POST" action="/">
+    <input type="submit" name="create_chart" value="Create chart">
+</form>
+
+<!-- Display the chart -->
 {% if file_url %}
     <img src="{{ file_url }}">
 {% endif %}
-
-<!-- <script>
-    if ( window.history.replaceState ) {
-        window.history.replaceState( null, null, window.location.href );
-    }
-</script> -->
-
-
-<!--Jquery Cdn -->
-<!-- <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-
-<script type="text/javascript">
-    $(document).on('submit','#todo-form',function(e) {
-        e.preventDefault();
-        $.ajax({
-            type:"POST",
-            url:"/",
-            data:{
-                todo:$("#todo").val()
-            }
-            // ,
-            // success:function()
-            // {
-            //     alert("saved");
-            // }
-        })
-    });
-</script> -->
 
 {% endblock %}

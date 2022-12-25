@@ -1,4 +1,10 @@
 body {
-    margin: 0;
+    margin: 10;
     font-family: sans-serif;
+}
+
+.flex {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
 }

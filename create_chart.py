@@ -79,6 +79,8 @@ def create_chart(radii, n_seats, rows, chart_title, show_podium=True):
     plt.tight_layout()
 
     # Save the image
+    # TODO: Use mpld3 instead of saving to png: https://www.freecodecamp.org/news/how-to-embed-interactive-python-visualizations-on-your-website-with-python-and-matplotlib/
+
     file_name = "seating_chart.png"
     plt.savefig(os.path.join(UPLOAD_FOLDER, file_name))    
 
