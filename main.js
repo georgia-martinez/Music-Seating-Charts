@@ -11,12 +11,7 @@ createChartButton.addEventListener("click", function() {
 
     for(i = 0; i < inputs.length; i++) {
         var currInput = inputs[i];
-
-        if(currInput.value) {
-            seatsPerRow.push(parseInt(inputs.valueAsNumber));
-        } else {    
-            seatsPerRow.push(-1)
-        }
+        seatsPerRow.push(parseInt(currInput.value));
     }
 
     createChart(seatsPerRow)

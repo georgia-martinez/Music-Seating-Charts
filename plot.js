@@ -38,10 +38,6 @@ function getTrace(radius, stepSize, line=true) {
     return trace
 }
 
-var all_traces = []
-// var radii = []
-// var numSeats = []
-
 // function addRow() {
 //     if(radii.length == 0) {
 //         radii.push(3);
@@ -69,6 +65,8 @@ function createChart(numSeats) {
 
 function plotSeatingChart(radii, numSeats) {
     console.log("Plot Seating Chart")
+
+    var all_traces = []
 
     for(i = 0; i < radii.length; i++) {
         r = radii[i]
