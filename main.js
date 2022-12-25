@@ -2,16 +2,28 @@ let numRows = 1
 
 let rowContainer = document.getElementById("row-container")
 let addRowButton = document.getElementById("add-row")
-let createChartButton = document.getElementById("add-row")
+let createChartButton = document.getElementById("create-chart")
 
 createChartButton.addEventListener("click", function() {
-    var allRowText = rowContainer.getElementsByTagName("p");
+    var inputs = rowContainer.getElementsByTagName("input");
 
-    plotSeatingChart()
+    var seatsPerRow = []
+
+    for(i = 0; i < inputs.length; i++) {
+        var currInput = inputs[i];
+
+        if(currInput.value) {
+            seatsPerRow.push(parseInt(inputs.valueAsNumber));
+        } else {    
+            seatsPerRow.push(-1)
+        }
+    }
+
+    createChart(seatsPerRow)
 })
 
 addRowButton.addEventListener("click", function() {
-
+    
     // Div for each row
     var rowDiv = document.createElement("div")
     rowDiv.classList.add("flex")
@@ -26,6 +38,7 @@ addRowButton.addEventListener("click", function() {
     // Input for the # of seats
     var seatInput = document.createElement("input")
     seatInput.setAttribute("type", "text")
+    seatInput.defaultValue = "0"
 
     // Remove row button
     var removeRowButton = document.createElement("button")
@@ -41,8 +54,6 @@ addRowButton.addEventListener("click", function() {
     })
 
     rowContainer.appendChild(rowDiv)
-
-    plotSeatingChart()
 })
 
 function renumberRows(rowText) {
@@ -57,3 +68,4 @@ function renumberRows(rowText) {
 
     numRows -= 1
 }
+
