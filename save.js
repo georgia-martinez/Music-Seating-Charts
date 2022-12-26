@@ -16,14 +16,23 @@ saveButton.addEventListener("click", function() {
     }
 })
 
+/**
+ * Saves the seating chart as a PNG
+ */
 function saveToPNG() {
 
 }
 
+/**
+ * Saves the seating chart as a PDF
+ */
 function saveToPDF() {
 
 }
 
+/**
+ * Saves the seating chart as a JSON
+ */
 function saveToJSON() {
     let rows = []
 

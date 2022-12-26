@@ -7,33 +7,24 @@ let chartTitle = document.getElementById("chart-title")
 let editRowText = document.getElementById("edit-row-text")
 
 addRowButton.addEventListener("click", function() { addRow() })
-chartTitle.addEventListener("change", function() { createChartBttn() })
+chartTitle.addEventListener("change", function() { createChart() })
 
+/**
+ * Stores the row number ("Row 1"), a seat input Node, and a name text area Node for the corresponding row
+ */
 class Row {
-    constructor(rowNum, seatInput, textArea) {
-        this.rowNum = rowNum
+    constructor(rowNumStr, seatInput, textArea) {
+        this.rowNumStr = rowNumStr
         this.seatInput = seatInput
         this.textArea = textArea
     }
 
-    getRowNum() {
-        return this.rowNum
-    }
-
-    setRowNum(rowNum) {
-        this.rowNum = rowNum
-    }
-
-    getSeatInput() {
-        return this.seatInput
+    setRowNum(rowNumStr) {
+        this.rowNumStr = rowNumStr
     }
 
     getNumSeats() {
         return this.seatInput.value;
-    }
-
-    getTextArea() {
-        return this.textArea
     }
 
     getNames() {
@@ -41,9 +32,12 @@ class Row {
     }
 }
 
-var rowMap = new Map()
+var rowMap = new Map() // Maps the row text ("Row 1") to a Row object
 
-function createChartBttn() {
+/**
+ * Creates the seating chart
+ */
+function createChart() {
     let seatsPerRow = []
     let namesPerRow = []
 
@@ -54,9 +48,16 @@ function createChartBttn() {
 
     namesList = getNames(namesPerRow, seatsPerRow)
 
-    createChart(chartTitle.value, seatsPerRow, namesList)
+    plotSeatingChart(chartTitle.value, seatsPerRow, namesList)
 }
 
+/**
+ * Formats the names into an array of arrays representing the names for each row. The input text (namesPerRow) is in the format ["Name1\nName2\", "Name1\nName2\", ...] and will be converted to [["Name1", "Name2"], ["Name1", "Name2"], ...]
+ * 
+ * @param {Array.<String>} namesPerRow names per row from the name text box
+ * @param {Array.<String>} seatsPerRow number of seats per row
+ * @returns array of arrays containing the names for each row
+ */
 function getNames(namesPerRow, seatsPerRow) {
     namesList = []
 
@@ -74,6 +75,9 @@ function getNames(namesPerRow, seatsPerRow) {
     return namesList
 }
 
+/**
+ * Adds a row
+ */
 function addRow() {
 
     // Div for each row
@@ -91,14 +95,14 @@ function addRow() {
     textarea.rows = 20
     textarea.cols = 25
     textarea.placeholder = "FirstName1 LastName1\nFirstName2 LastName2\netc..."
-    textarea.addEventListener("change", () => { createChartBttn() })
+    textarea.addEventListener("change", () => { createChart() })
 
     // Input for the # of seats
     let seatInput = document.createElement("input")
     seatInput.setAttribute("type", "text")
     seatInput.defaultValue = "0"
 
-    seatInput.addEventListener("change", function() { createChartBttn() })
+    seatInput.addEventListener("change", function() { createChart() })
 
     let newRow = new Row(rowText.innerText, seatInput, textarea)
 
@@ -123,9 +127,12 @@ function addRow() {
 
     rowContainer.appendChild(rowDiv)
 
-    createChartBttn()
+    createChart()
 }
 
+/**
+ * Pulls up the corresponding name textbox for the correct row
+ */
 function editRow(rowTextInner) {
     editRowText.innerText = rowTextInner + " Names:"
 
@@ -138,6 +145,9 @@ function editRow(rowTextInner) {
     editContainer.appendChild(nameBox)
 }
 
+/**
+ * Removes the corresponding row
+ */
 function removeRow(parentNode, rowText) {
     if(numRows > 1) {
         numRows -= 1    
@@ -147,10 +157,15 @@ function removeRow(parentNode, rowText) {
         rowMap.delete(rowText.innerText)
     
         renumberRows(rowText.innerText)
-        createChartBttn()
+        createChart()
     }
 }
 
+/**
+ * Renumbers the rows when a row is deleted so the row numbers are alwaus continous (e.g. 1, 2, 3, 4, etc.)
+ * 
+ * @param {String} rowText e.g. "Row 1"
+ */
 function renumberRows(rowText) {
     let allRowText = rowContainer.getElementsByTagName("p")
 
@@ -176,6 +191,9 @@ function renumberRows(rowText) {
     rowMap = newRowMap
 }
 
+/**
+ * To be called when the site is first loaded/reloaded
+ */
 function main() {
     addRow()
     editRow("Row 1")

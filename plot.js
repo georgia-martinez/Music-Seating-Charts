@@ -1,5 +1,13 @@
 SEATINGCHART = document.getElementById("seating-chart")
 
+/**
+ * Returns num evenly spaced points, calculated over the interval [start, stop] where the endpoint is incuded
+ * 
+ * @param {*} start starting value
+ * @param {*} stop end value
+ * @param {*} num number of points to generate
+ * @returns num evenly spaced points
+ */
 function linspace(start, stop, num) {
     let arr = []
 
@@ -16,6 +24,13 @@ function linspace(start, stop, num) {
     return arr
 }
 
+/**
+ * Returns a list of evenly spaced (x, y) and theta values given a radius and a stepsize
+ * 
+ * @param {Number} radius radius
+ * @param {*} stepSize number of points evenly spaced points to generate
+ * @returns array containing [x, y, theta]
+ */
 function getPoints(radius, stepSize) {
 
     let theta = linspace(0, Math.PI, stepSize)
@@ -26,6 +41,14 @@ function getPoints(radius, stepSize) {
     return [x, y, theta]
 }
 
+/**
+ * Returns the trace of a semicircle to plot
+ * 
+ * @param {Number} radius radius
+ * @param {Number} stepSize number of equally spaced points 
+ * @param {Boolean} line true to plot a line, false to plot markers
+ * @returns a trace of a semicircle to plot
+ */
 function getTrace(radius, stepSize, line=true) {
     let points = getPoints(radius, stepSize)
 
@@ -45,21 +68,6 @@ function getTrace(radius, stepSize, line=true) {
     }
 
     return trace
-}
-
-function createChart(title, numSeats, namesList) {
-
-    const N = 3
-
-    let x = N
-    let radii = [N]
-
-    for(i = 1; i < numSeats.length; i++) {
-        x += N
-        radii.push(x)
-    }
-
-    plotSeatingChart(title, radii, numSeats, namesList)
 }
 
 /**
@@ -94,10 +102,38 @@ function rotatedSquare(x, y, theta, len) {
     return format
 }
 
-function plotSeatingChart(title, radii, numSeats, namesList) {
+/**
+ * Returns an array of numbers specifying the radius value for each row
+ * 
+ * @param {*} R length between each row
+ * @param {Array.<Number>} numSeats number of seats for each row 
+ * @returns array of radii corresponding to each row
+ */
+function getRadii(R, numSeats) {
+    let x = R
+    let radii = [R]
+
+    for(i = 1; i < numSeats.length; i++) {
+        x += R
+        radii.push(x)
+    }
+
+    return radii
+}
+
+/**
+ * Plots the seating chart
+ * 
+ * @param {String} title 
+ * @param {Array.<Number>} radii 
+ * @param {Array.<Number>} numSeats 
+ * @param {Array.<Array.<String>>} namesList array of arrays containing the names for each row
+ */
+function plotSeatingChart(title, numSeats, namesList) {
     let all_traces = []
     let shapes = []
     let annotations = []
+    let radii = getRadii(3, numSeats)
 
     // Iterate through every radius value
     for(i = 0; i < radii.length; i++) {
@@ -114,12 +150,12 @@ function plotSeatingChart(title, radii, numSeats, namesList) {
             continue
         }
 
+        // Iterate through every seat
         let points = getPoints(r, n)
         let all_x = points[0]
         let all_y = points[1] 
         let all_theta = points[2]
 
-        // Iterate through every seat
         for(j = 0; j < all_x.length; j++) {
             let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], 1)
 
@@ -127,9 +163,7 @@ function plotSeatingChart(title, radii, numSeats, namesList) {
                 type: "path",
                 path: path,
                 fillcolor: "rgb(255, 255, 255)",
-                line: {
-                    color: "rgb(0, 0, 0)"
-                }
+                line: { color: "rgb(0, 0, 0)" }
             }
 
             shapes.push(seat)
@@ -151,9 +185,7 @@ function plotSeatingChart(title, radii, numSeats, namesList) {
     }
     
     let layout = {
-        title: {
-            text:title
-        },
+        title: { text:title },
         autosize: true,
         showlegend: false,
         shapes: shapes,
