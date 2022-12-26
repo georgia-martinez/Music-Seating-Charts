@@ -1,11 +1,16 @@
 function linspace(start, stop, num) {
     let arr = []
 
-    let step = (start - stop) / (num - 1)
+    if(num != 1) {
+        let step = (start - stop) / (num - 1)
 
-    for (let i = 0; i < num; i++) {
-      arr.push(start + (step * i))
+        for (let i = 0; i < num; i++) {
+          arr.push(start + (step * i))
+        }
+    } else {
+        arr.push(3*Math.PI/2)
     }
+
     return arr
 }
 
