@@ -62,57 +62,36 @@ function createChart(title, numSeats, namesList) {
     plotSeatingChart(title, radii, numSeats, namesList)
 }
 
+/**
+ * Given a (x, y) point representing the center of a square and the side length (len), returns the square rotated by theta (in radians) from the square's center as a Plotly formatted string  
+ * 
+ * @param {Number} x center x 
+ * @param {Number} y center y
+ * @param {Number} theta angle to rotate by (in radians)
+ * @param {Number} len side length of the square
+ * @returns Plotly formatted string representing the rotated square
+ */
 function rotatedSquare(x, y, theta, len) {
     let l = len/2
-
-    // Bottom right
-    let x0 = x - l
-    let y0 = y - l
-
-    // top left
-    let x1 = x - l
-    let y1 = y + l
-
-    // top right
-    let x2 = x + l
-    let y2 = y + l
-
-    // bottom right
-    let x3 = x + l
-    let y3 = y - l
-
-    let all_x = [x0, x1, x2, x3]
-    let all_y = [y0, y1, y2, y3]
 
     let rot_x = []
     let rot_y = []
 
-    for(let i = 0; i < all_x.length; i++) {
-        rot_x.push(rotateX(all_x[i], all_y[i], x, y, theta))
-        rot_y.push(rotateY(all_x[i], all_y[i], x, y, theta))
+    // Rotate the four points of the square
+    for(let x1 of [x - l, x + l]) {
+        for(let y1 of [y - l, y + l]) {
+            rot_x.push((x1 - x) * Math.cos(theta) - (y1 - y) * Math.sin(theta) + x)
+            rot_y.push((x1 - x) * Math.sin(theta) + (y1 - y) * Math.cos(theta) + y)
+        }
     }
 
-    x0 = rot_x[0]
-    x1 = rot_x[1]
-    x2 = rot_x[2]
-    x3 = rot_x[3]
-
-    y0 = rot_y[0]
-    y1 = rot_y[1]
-    y2 = rot_y[2]
-    y3 = rot_y[3]
+    // Index 2 and 3 are swapped so the square is drawn correctly
+    x0 = rot_x[0], x1 = rot_x[1], x2 = rot_x[3], x3 = rot_x[2]
+    y0 = rot_y[0], y1 = rot_y[1], y2 = rot_y[3], y3 = rot_y[2]
 
     let format = `M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`
 
     return format
-}
-
-function rotateX(x, y, x0, y0, theta) {
-    return (x - x0) * Math.cos(theta) - (y - y0) * Math.sin(theta) + x0
-}
-
-function rotateY(x, y, x0, y0, theta) {
-    return (x - x0) * Math.sin(theta) + (y - y0) * Math.cos(theta) + y0
 }
 
 function plotSeatingChart(title, radii, numSeats, namesList) {
