@@ -156,9 +156,22 @@ function plotSeatingChart(radii, numSeats) {
     
     let layout = {
         autosize: true,
-        shapes: shapes
+        showlegend: false,
+        shapes: shapes,
+        xaxis: {
+            showgrid: false, 
+            zeroline: false,
+            visible: false
+        },
+        yaxis: {
+            showgrid: false, 
+            zeroline: false,
+            visible: false
+        }
     }
 
-    Plotly.newPlot(SEATINGCHART, all_traces, layout) 
+    let config = { displayModeBar: false }
+
+    Plotly.newPlot(SEATINGCHART, all_traces, layout, config) 
 }
 
