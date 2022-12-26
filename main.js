@@ -1,77 +1,120 @@
 let numRows = 1
 
 let rowContainer = document.getElementById("row-container")
+let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
 let createChartButton = document.getElementById("create-chart")
 
-function createChartBttn() {
-    var inputs = rowContainer.getElementsByTagName("input");
+var rowMap = new Map()
 
-    var seatsPerRow = []
+function createChartBttn() {
+    let inputs = rowContainer.getElementsByTagName("input")
+
+    let seatsPerRow = []
 
     for(i = 0; i < inputs.length; i++) {
-        var currInput = inputs[i];
-        seatsPerRow.push(parseInt(currInput.value));
+        let currInput = inputs[i]
+        seatsPerRow.push(parseInt(currInput.value))
     }
 
     createChart(seatsPerRow)
 }
 
-createChartButton.addEventListener("click", function() {
-    createChartBttn()
-})
+function removeRow(parentNode, rowText) {
+    parentNode.remove()
 
-addRowButton.addEventListener("click", function() {
-    
+    rowMap.delete(rowText.innerText)
+
+    renumberRows(rowText.innerText)
+    createChartBttn()
+}
+
+function addRow() {
+
     // Div for each row
-    var rowDiv = document.createElement("div")
+    let rowDiv = document.createElement("div")
     rowDiv.classList.add("flex")
 
     // Row text
-    var rowText = document.createElement("p")
+    let rowText = document.createElement("p")
     rowText.classList.add("paragraph-styling")
     
     rowText.innerText = "Row " +numRows
     numRows += 1
 
+    textarea = document.createElement("textarea")
+    textarea.rows = 20
+    textarea.cols = 20
+
+    rowMap.set(rowText.innerText, textarea);
+
     // Input for the # of seats
-    var seatInput = document.createElement("input")
+    let seatInput = document.createElement("input")
     seatInput.setAttribute("type", "text")
     seatInput.defaultValue = "0"
 
-    seatInput.addEventListener("change", () => {
-        createChartBttn()
-    });
+    seatInput.addEventListener("change", () => { createChartBttn() })
+
+    // Edit row button
+    let editRowButton = document.createElement("button")
+    editRowButton.textContent = "Edit"
+    
+    editRowButton.addEventListener("click", function() {
+        while (editContainer.firstChild) {
+            editContainer.removeChild(editContainer.firstChild);
+        }
+        
+        let nameBox = rowMap.get(rowText.innerText)
+        nameBox.placeholder = rowText.innerText
+
+        editContainer.appendChild(nameBox)
+        
+    })
 
     // Remove row button
-    var removeRowButton = document.createElement("button")
+    let removeRowButton = document.createElement("button")
     removeRowButton.textContent = "X"
     
     rowDiv.appendChild(rowText)
     rowDiv.appendChild(seatInput)
+    rowDiv.appendChild(editRowButton)
     rowDiv.appendChild(removeRowButton)
     
-    removeRowButton.addEventListener("click", function() {
-        this.parentNode.remove()
-        renumberRows(rowText.innerText)
-        createChartBttn()
-    })
+    removeRowButton.addEventListener("click", function() { removeRow(this.parentNode, rowText) })
 
     rowContainer.appendChild(rowDiv)
 
     createChartBttn()
-})
+}
+
+createChartButton.addEventListener("click", function() { createChartBttn() })
+
+addRowButton.addEventListener("click", function() { addRow() })
 
 function renumberRows(rowText) {
-    var allRowText = rowContainer.getElementsByTagName("p")
+    let allRowText = rowContainer.getElementsByTagName("p")
 
-    var start = parseInt(rowText.slice(-1)) - 1
+    let start = parseInt(rowText.slice(-1)) - 1
 
     for(i = start; i < allRowText.length; i++) {
-        var row = allRowText[i]
+        let row = allRowText[i]
         row.innerText = "Row " +(i+1)
     }
 
-    numRows -= 1
+    numRows -= 1    
+
+    // Create a new rowMap retaining the same textareas
+    let newRowMap = new Map()
+
+    let count = 1
+    for (const value of rowMap.values()) {
+        let key = "Row " +count
+        newRowMap.set(key, value)
+        count += 1
+    }
+
+    rowMap = newRowMap
+
+    // TODO: if deleted row is the one currently selected, need to make sure the textbox is updated
 }
 

@@ -21,8 +21,6 @@ function getPoints(radius, stepSize) {
     let x = theta.map(t => radius * Math.cos(t))
     let y = theta.map(t => radius * Math.sin(t))
 
-    console.log([x, y, theta])
-
     return [x, y, theta]
 }
 
@@ -46,8 +44,6 @@ function getTrace(radius, stepSize, line=true) {
 }
 
 function createChart(numSeats) {
-    console.log("Create Chart")
-
     let radii = [3]
     let x = 3
 
@@ -112,10 +108,6 @@ function rotateY(x, y, x0, y0, theta) {
 }
 
 function plotSeatingChart(radii, numSeats) {
-    console.log("Plot Seating Chart")
-
-    console.log("numSeats" +numSeats)
-
     let all_traces = []
     let shapes = []
 
