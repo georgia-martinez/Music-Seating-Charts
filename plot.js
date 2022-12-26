@@ -21,7 +21,7 @@ function getPoints(radius, stepSize) {
     return [x, y, theta]
 }
 
-TESTER = document.getElementById('tester')
+SEATINGCHART = document.getElementById("seating-chart")
 
 function getTrace(radius, stepSize, line=true) {
     let points = getPoints(radius, stepSize)
@@ -159,6 +159,6 @@ function plotSeatingChart(radii, numSeats) {
         shapes: shapes
     }
 
-    Plotly.newPlot(TESTER, all_traces, layout) 
+    Plotly.newPlot(SEATINGCHART, all_traces, layout) 
 }
 

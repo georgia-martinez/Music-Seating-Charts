@@ -4,7 +4,7 @@ let rowContainer = document.getElementById("row-container")
 let addRowButton = document.getElementById("add-row")
 let createChartButton = document.getElementById("create-chart")
 
-createChartButton.addEventListener("click", function() {
+function createChartBttn() {
     var inputs = rowContainer.getElementsByTagName("input");
 
     var seatsPerRow = []
@@ -15,6 +15,10 @@ createChartButton.addEventListener("click", function() {
     }
 
     createChart(seatsPerRow)
+}
+
+createChartButton.addEventListener("click", function() {
+    createChartBttn()
 })
 
 addRowButton.addEventListener("click", function() {
@@ -35,6 +39,10 @@ addRowButton.addEventListener("click", function() {
     seatInput.setAttribute("type", "text")
     seatInput.defaultValue = "0"
 
+    seatInput.addEventListener("change", () => {
+        createChartBttn()
+    });
+
     // Remove row button
     var removeRowButton = document.createElement("button")
     removeRowButton.textContent = "X"
@@ -46,9 +54,12 @@ addRowButton.addEventListener("click", function() {
     removeRowButton.addEventListener("click", function() {
         this.parentNode.remove()
         renumberRows(rowText.innerText)
+        createChartBttn()
     })
 
     rowContainer.appendChild(rowDiv)
+
+    createChartBttn()
 })
 
 function renumberRows(rowText) {
