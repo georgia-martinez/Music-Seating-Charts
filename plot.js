@@ -47,7 +47,7 @@ function getTrace(radius, stepSize, line=true) {
     return trace
 }
 
-function createChart(numSeats, namesList) {
+function createChart(title, numSeats, namesList) {
 
     const N = 3
 
@@ -59,7 +59,7 @@ function createChart(numSeats, namesList) {
         radii.push(x)
     }
 
-    plotSeatingChart(radii, numSeats, namesList)
+    plotSeatingChart(title, radii, numSeats, namesList)
 }
 
 function rotatedSquare(x, y, theta, len) {
@@ -114,7 +114,7 @@ function rotateY(x, y, x0, y0, theta) {
     return (x - x0) * Math.sin(theta) + (y - y0) * Math.cos(theta) + y0
 }
 
-function plotSeatingChart(radii, numSeats, namesList) {
+function plotSeatingChart(title, radii, numSeats, namesList) {
     let all_traces = []
     let shapes = []
     let annotations = []
@@ -171,6 +171,9 @@ function plotSeatingChart(radii, numSeats, namesList) {
     }
     
     let layout = {
+        title: {
+            text:title
+        },
         autosize: true,
         showlegend: false,
         shapes: shapes,

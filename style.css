@@ -10,6 +10,6 @@ body {
 }
 
 .seating-chart {
-    width: 1000px;
-    height: 600px;
+    height: 100%;
+    width: 60%;
 }

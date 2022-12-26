@@ -3,6 +3,10 @@ let numRows = 0
 let rowContainer = document.getElementById("row-container")
 let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
+let chartTitle = document.getElementById("chart-title")
+
+addRowButton.addEventListener("click", function() { addRow() })
+chartTitle.addEventListener("change", function() { createChartBttn() })
 
 class Row {
     constructor(rowNum, seatInput, textArea) {
@@ -38,6 +42,20 @@ class Row {
 
 var rowMap = new Map()
 
+function createChartBttn() {
+    let seatsPerRow = []
+    let namesPerRow = []
+
+    for(let row of rowMap.values()) {
+        seatsPerRow.push(parseInt(row.getNumSeats()))
+        namesPerRow.push(row.getNames())
+    }
+
+    namesList = getNames(namesPerRow, seatsPerRow)
+
+    createChart(chartTitle.value, seatsPerRow, namesList)
+}
+
 function getNames(namesPerRow, seatsPerRow) {
     namesList = []
 
@@ -53,33 +71,6 @@ function getNames(namesPerRow, seatsPerRow) {
     }
 
     return namesList
-}
-
-function createChartBttn() {
-    let seatsPerRow = []
-    let namesPerRow = []
-
-    for(let row of rowMap.values()) {
-        seatsPerRow.push(parseInt(row.getNumSeats()))
-        namesPerRow.push(row.getNames())
-    }
-
-    namesList = getNames(namesPerRow, seatsPerRow)
-
-    createChart(seatsPerRow, namesList)
-}
-
-function removeRow(parentNode, rowText) {
-    if(numRows > 1) {
-        numRows -= 1    
-
-        parentNode.remove()
-
-        rowMap.delete(rowText.innerText)
-    
-        renumberRows(rowText.innerText)
-        createChartBttn()
-    }
 }
 
 function addRow() {
@@ -115,17 +106,7 @@ function addRow() {
     let editRowButton = document.createElement("button")
     editRowButton.textContent = "Edit"
     
-    editRowButton.addEventListener("click", function() {
-        while (editContainer.firstChild) {
-            editContainer.removeChild(editContainer.firstChild);
-        }
-        
-        let nameBox = rowMap.get(rowText.innerText).getTextArea()
-        nameBox.placeholder = rowText.innerText
-
-        editContainer.appendChild(nameBox)
-        
-    })
+    editRowButton.addEventListener("click", function() { editRow(rowText.innerText) })
 
     // Remove row button
     let removeRowButton = document.createElement("button")
@@ -143,7 +124,29 @@ function addRow() {
     createChartBttn()
 }
 
-addRowButton.addEventListener("click", function() { addRow() })
+function editRow(rowTextInner) {
+    while (editContainer.firstChild) {
+        editContainer.removeChild(editContainer.firstChild);
+    }
+    
+    let nameBox = rowMap.get(rowTextInner).getTextArea()
+    nameBox.placeholder = rowTextInner
+
+    editContainer.appendChild(nameBox)
+}
+
+function removeRow(parentNode, rowText) {
+    if(numRows > 1) {
+        numRows -= 1    
+
+        parentNode.remove()
+
+        rowMap.delete(rowText.innerText)
+    
+        renumberRows(rowText.innerText)
+        createChartBttn()
+    }
+}
 
 function renumberRows(rowText) {
     let allRowText = rowContainer.getElementsByTagName("p")
@@ -171,3 +174,4 @@ function renumberRows(rowText) {
 }
 
 addRow()
+editRow("Row 1")

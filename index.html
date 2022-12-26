@@ -16,12 +16,15 @@
 
     <div class="flex">
         <p>Seating Chart Name: </p>
-        <input type="text">
+        <input type="text" id="chart-title" value="My Seating Chart">
     </div>
 
     <div class="flex">
         <div class="" id="row-container"></div>
-        <div class="" id="edit-container"></div>
+        <div class="" id="edit-container">
+            <textarea name="" id="" cols="20" rows="20" placeholder="Row 1"></textarea>
+        </div>
+        <div class="seating-chart" id="seating-chart"></div>
     </div>
 
     <button id="add-row">Add Row</button>
@@ -39,8 +42,6 @@
     <div id="json">
         <a id="a-tag"></a>
     </div>
-
-    <div class="seating-chart" id="seating-chart"></div>
 
     <script src="plot.js"></script>
     <script src="main.js"></script>

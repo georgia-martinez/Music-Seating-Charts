@@ -6,15 +6,23 @@ saveButton.addEventListener("click", function() {
 
     switch(selected) {
         case "PNG":
-            // code block
-            break;
+            saveToPNG()
+            break
         case "PDF":
-            // code block
-            break;
+            saveToPDF()
+            break
         case "JSON":
             saveToJSON()
     }
 })
+
+function saveToPNG() {
+
+}
+
+function saveToPDF() {
+
+}
 
 function saveToJSON() {
     let rows = []
@@ -30,7 +38,7 @@ function saveToJSON() {
     }
 
     data = {
-        "Chart Title": "UNNAMED",
+        "Chart Title": chartTitle.value,
         "Rows": rows
     }
 
@@ -40,9 +48,11 @@ function saveToJSON() {
     let blob = new Blob([jsonse], {type: "application/json"});
     let url  = URL.createObjectURL(blob);
 
+    fileName = chartTitle.value.replace(/\s\s+/g, "_");
+
     var a = document.getElementById("a-tag");
     a.href = url;
-    a.download = "seating_chart.json";
+    a.download = fileName+".json";
     a.textContent = "Download " + a.download;
 
     document.getElementById('json').appendChild(a);
