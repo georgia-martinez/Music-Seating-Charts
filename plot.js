@@ -38,18 +38,24 @@ function getTrace(radius, stepSize, line=true) {
         x: x, 
         y: y,
         mode: mode,
-        hoverinfo: "skip"
+        hoverinfo: "skip",
+        line: {
+            color: "rgb(0, 0, 0)",
+        }
     }
 
     return trace
 }
 
 function createChart(numSeats, namesList) {
-    let radii = [3]
-    let x = 3
+
+    const N = 3
+
+    let x = N
+    let radii = [N]
 
     for(i = 1; i < numSeats.length; i++) {
-        x += 3
+        x += N
         radii.push(x)
     }
 

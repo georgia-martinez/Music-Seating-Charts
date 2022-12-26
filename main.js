@@ -1,9 +1,8 @@
-let numRows = 1
+let numRows = 0
 
 let rowContainer = document.getElementById("row-container")
 let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
-let createChartButton = document.getElementById("create-chart")
 
 class Row {
     constructor(rowNum, seatInput, textArea) {
@@ -71,12 +70,16 @@ function createChartBttn() {
 }
 
 function removeRow(parentNode, rowText) {
-    parentNode.remove()
+    if(numRows > 1) {
+        numRows -= 1    
 
-    rowMap.delete(rowText.innerText)
+        parentNode.remove()
 
-    renumberRows(rowText.innerText)
-    createChartBttn()
+        rowMap.delete(rowText.innerText)
+    
+        renumberRows(rowText.innerText)
+        createChartBttn()
+    }
 }
 
 function addRow() {
@@ -88,9 +91,9 @@ function addRow() {
     // Row text
     let rowText = document.createElement("p")
     rowText.classList.add("paragraph-styling")
-    
-    rowText.innerText = "Row " +numRows
+
     numRows += 1
+    rowText.innerText = "Row " +numRows
 
     textarea = document.createElement("textarea")
     textarea.rows = 20
@@ -140,8 +143,6 @@ function addRow() {
     createChartBttn()
 }
 
-createChartButton.addEventListener("click", function() { createChartBttn() })
-
 addRowButton.addEventListener("click", function() { addRow() })
 
 function renumberRows(rowText) {
@@ -153,8 +154,6 @@ function renumberRows(rowText) {
         let row = allRowText[i]
         row.innerText = "Row " +(i+1)
     }
-
-    numRows -= 1    
 
     // Create a new rowMap retaining the same textareas
     let newRowMap = new Map()
@@ -171,3 +170,4 @@ function renumberRows(rowText) {
     rowMap = newRowMap
 }
 
+addRow()
