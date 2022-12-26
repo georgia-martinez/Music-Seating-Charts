@@ -37,7 +37,8 @@ function getTrace(radius, stepSize, line=true) {
     let trace = {
         x: x, 
         y: y,
-        mode: mode
+        mode: mode,
+        hoverinfo: "skip"
     }
 
     return trace
@@ -112,7 +113,6 @@ function getNames(namesList, num) {
     let end = num - names.length
 
     for(let i = 0; i < end; i++) {
-        console.log(i)
         names.push("")
     }
 
@@ -139,9 +139,6 @@ function plotSeatingChart(radii, numSeats, namesList) {
             continue
         }
 
-        let seatThings = getTrace(r, n, false) 
-        all_traces.push(seatThings)
-
         let points = getPoints(r, n)
         let all_x = points[0]
         let all_y = points[1] 
@@ -162,15 +159,16 @@ function plotSeatingChart(radii, numSeats, namesList) {
 
             shapes.push(seat)
 
-            console.log(names[j])
-
             nameText = {
                 x: all_x[j],
                 y: all_y[j],
-                xref: 'x',
-                yref: 'y',
+                xref: "x",
+                yref: "y",
                 text: names[j],
-                showarrow: false
+                showarrow: false,
+                borderwidth: 1,
+                borderpad: 1,
+                bgcolor: "#ffffff"
             }
 
             annotations.push(nameText)
