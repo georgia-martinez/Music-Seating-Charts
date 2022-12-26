@@ -252,3 +252,12 @@ function getPodium() {
     return [podium, text];
 }
 
+function downloadPNG(fileName, imageFormat) {
+    Plotly.newPlot(SEATINGCHART, SEATINGCHART.data, SEATINGCHART.layout, SEATINGCHART.config)
+    .then(function(download) {
+        Plotly.downloadImage(download, {
+            format: imageFormat,
+            filename: fileName
+        })
+    });
+}

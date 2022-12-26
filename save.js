@@ -8,8 +8,8 @@ saveButton.addEventListener("click", function() {
         case "PNG":
             saveToPNG();
             break
-        case "PDF":
-            saveToPDF();
+        case "JPEG":
+            saveToJPEG();
             break
         case "JSON":
             saveToJSON();
@@ -20,14 +20,14 @@ saveButton.addEventListener("click", function() {
  * Saves the seating chart as a PNG
  */
 function saveToPNG() {
-
+    downloadPNG(getFileName(chartTitle.value), "png");
 }
 
 /**
  * Saves the seating chart as a PDF
  */
-function saveToPDF() {
-
+function saveToJPEG() {
+    downloadPNG(getFileName(chartTitle.value), "jpeg");
 }
 
 /**
@@ -54,13 +54,16 @@ function saveToJSON() {
     let blob = new Blob([jsonse], {type: "application/json"});
     let url  = URL.createObjectURL(blob);
 
-    fileName = chartTitle.value.replace(/\s\s+/g, "_");
+    let fileName = getFileName(chartTitle.value);
 
     var a = document.getElementById("a-tag");
     a.href = url;
     a.download = fileName+".json";
-    a.textContent = "Download " + a.download;
 
-    document.getElementById('json').appendChild(a);
+    a.click();
+    URL.revokeObjectURL(blobUrl)
 }
-    
+
+function getFileName(fileName) {
+    return fileName.split(" ").join("_");
+}    

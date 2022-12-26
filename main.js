@@ -23,6 +23,10 @@ class Row {
         this.textArea = textArea;
     }
 
+    getRowNum() {
+        return this.rowNumStr;
+    }
+
     setRowNum(rowNumStr) {
         this.rowNumStr = rowNumStr;
     }
