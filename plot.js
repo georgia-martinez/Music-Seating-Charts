@@ -102,7 +102,8 @@ function rotatedSquare(x, y, theta, len) {
     y2 = rot_y[2]
     y3 = rot_y[3]
 
-    let format = "M "+x0+" "+y0+" L "+x1+" "+y1+" L "+x2+" "+y2+" L " +x3+" "+y3+" Z"
+    let format = `M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`
+
     return format
 }
 
@@ -192,7 +193,10 @@ function plotSeatingChart(title, radii, numSeats, namesList) {
         annotations: annotations
     }
 
-    let config = { displayModeBar: false }
+    let config = { 
+        displayModeBar: false,
+        responsive: true 
+    }
 
     Plotly.newPlot(SEATINGCHART, all_traces, layout, config) 
 }

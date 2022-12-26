@@ -33,7 +33,6 @@ function saveToJSON() {
             numSeats: row.getNumSeats(),
             names: row.getNames()
         }
-
         rows.push(curr_row)
     }
 
@@ -42,19 +41,17 @@ function saveToJSON() {
         "Rows": rows
     }
 
-    console.log(data)
+    let jsonse = JSON.stringify(data, null, 2)
+    let blob = new Blob([jsonse], {type: "application/json"})
+    let url  = URL.createObjectURL(blob)
 
-    let jsonse = JSON.stringify(data, null, 2);
-    let blob = new Blob([jsonse], {type: "application/json"});
-    let url  = URL.createObjectURL(blob);
+    fileName = chartTitle.value.replace(/\s\s+/g, "_")
 
-    fileName = chartTitle.value.replace(/\s\s+/g, "_");
+    var a = document.getElementById("a-tag")
+    a.href = url
+    a.download = fileName+".json"
+    a.textContent = "Download " + a.download
 
-    var a = document.getElementById("a-tag");
-    a.href = url;
-    a.download = fileName+".json";
-    a.textContent = "Download " + a.download;
-
-    document.getElementById('json').appendChild(a);
+    document.getElementById('json').appendChild(a)
 }
     

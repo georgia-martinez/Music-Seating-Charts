@@ -14,29 +14,34 @@
         <input type="submit" name="upload_file" value="Upload file">
     </form>
 
-    <div class="flex">
-        <p>Seating Chart Name: </p>
+    <div class="flex flex-item">
+        <p> Seating Chart Name: </p>
         <input type="text" id="chart-title" value="My Seating Chart">
     </div>
 
     <div class="flex">
-        <div class="" id="row-container"></div>
-        <div class="" id="edit-container">
-            <textarea name="" id="" cols="20" rows="20" placeholder="Row 1"></textarea>
+        <div class="flex-col">
+            <div id="row-container"></div>
+            <button id="add-row">Add Row</button>
+        </div>
+        <div>
+            <p id="edit-row-text">Row # Names:</p>
+            <div id="edit-container"></div>
+            <div class="flex-col">
+                <label><input type="checkbox">Show Podium</label>
+                <label><input type="checkbox">Flip Chart</label>
+            </div>
         </div>
         <div class="seating-chart" id="seating-chart"></div>
     </div>
-
-    <button id="add-row">Add Row</button>
-
-    <div class="flex">
+    <div class="flex flex-item">
         <p>Save as: </p>
         <select id="select-box">
             <option>PNG</option>
             <option>PDF</option>
             <option>JSON</option>
         </select>
-        <button id="save">Save</button>    
+        <button id="save">Save</button>   
     </div>
 
     <div id="json">
@@ -45,6 +50,6 @@
 
     <script src="plot.js"></script>
     <script src="main.js"></script>
-    <script src="json.js"></script>
+    <script src="save.js"></script>
 </body>
 </html>

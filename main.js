@@ -4,6 +4,7 @@ let rowContainer = document.getElementById("row-container")
 let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
 let chartTitle = document.getElementById("chart-title")
+let editRowText = document.getElementById("edit-row-text")
 
 addRowButton.addEventListener("click", function() { addRow() })
 chartTitle.addEventListener("change", function() { createChartBttn() })
@@ -78,17 +79,18 @@ function addRow() {
     // Div for each row
     let rowDiv = document.createElement("div")
     rowDiv.classList.add("flex")
+    rowDiv.classList.add("flex-item")
 
     // Row text
     let rowText = document.createElement("p")
-    rowText.classList.add("paragraph-styling")
 
     numRows += 1
     rowText.innerText = "Row " +numRows
 
     textarea = document.createElement("textarea")
     textarea.rows = 20
-    textarea.cols = 20
+    textarea.cols = 25
+    textarea.placeholder = "FirstName1 LastName1\nFirstName2 LastName2\netc..."
     textarea.addEventListener("change", () => { createChartBttn() })
 
     // Input for the # of seats
@@ -105,13 +107,13 @@ function addRow() {
     // Edit row button
     let editRowButton = document.createElement("button")
     editRowButton.textContent = "Edit"
-    
+
     editRowButton.addEventListener("click", function() { editRow(rowText.innerText) })
 
     // Remove row button
     let removeRowButton = document.createElement("button")
     removeRowButton.textContent = "X"
-    
+
     rowDiv.appendChild(rowText)
     rowDiv.appendChild(seatInput)
     rowDiv.appendChild(editRowButton)
@@ -125,12 +127,13 @@ function addRow() {
 }
 
 function editRow(rowTextInner) {
+    editRowText.innerText = rowTextInner + " Names:"
+
     while (editContainer.firstChild) {
         editContainer.removeChild(editContainer.firstChild);
     }
     
     let nameBox = rowMap.get(rowTextInner).getTextArea()
-    nameBox.placeholder = rowTextInner
 
     editContainer.appendChild(nameBox)
 }
@@ -173,5 +176,9 @@ function renumberRows(rowText) {
     rowMap = newRowMap
 }
 
-addRow()
-editRow("Row 1")
+function main() {
+    addRow()
+    editRow("Row 1")
+}
+
+main()
