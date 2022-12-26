@@ -1,3 +1,5 @@
+SEATINGCHART = document.getElementById("seating-chart")
+
 function linspace(start, stop, num) {
     let arr = []
 
@@ -24,8 +26,6 @@ function getPoints(radius, stepSize) {
     return [x, y, theta]
 }
 
-SEATINGCHART = document.getElementById("seating-chart")
-
 function getTrace(radius, stepSize, line=true) {
     let points = getPoints(radius, stepSize)
 
@@ -43,7 +43,7 @@ function getTrace(radius, stepSize, line=true) {
     return trace
 }
 
-function createChart(numSeats) {
+function createChart(numSeats, namesList) {
     let radii = [3]
     let x = 3
 
@@ -52,7 +52,7 @@ function createChart(numSeats) {
         radii.push(x)
     }
 
-    plotSeatingChart(radii, numSeats)
+    plotSeatingChart(radii, numSeats, namesList)
 }
 
 function rotatedSquare(x, y, theta, len) {
@@ -107,13 +107,18 @@ function rotateY(x, y, x0, y0, theta) {
     return (x - x0) * Math.sin(theta) + (y - y0) * Math.cos(theta) + y0
 }
 
-function plotSeatingChart(radii, numSeats) {
+function plotSeatingChart(radii, numSeats, namesList) {
     let all_traces = []
     let shapes = []
+    let annotations = []
 
+    // Iterate through every radius value
     for(i = 0; i < radii.length; i++) {
         let r = radii[i]
         let n = numSeats[i]
+
+        let names = namesList[i].split(/\n/)
+        console.log(names)
 
         // Plot a black line for each row
         let rowLine = getTrace(r, 1000, true) 
@@ -127,27 +132,35 @@ function plotSeatingChart(radii, numSeats) {
         all_traces.push(seatThings)
 
         let points = getPoints(r, n)
+        let all_x = points[0]
+        let all_y = points[1] 
+        let all_theta = points[2]
 
-        for(j = 0; j < n; j++) {        
+        // Iterate through every seat
+        for(j = 0; j < all_x.length; j++) {
+            let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], 1)
 
-            let all_x = points[0]
-            let all_y = points[1] 
-            let all_theta = points[2]
-
-            for(k = 0; k < all_x.length; k++) {
-                let path = rotatedSquare(all_x[k], all_y[k], all_theta[k], 1)
-
-                seat = {
-                    type: "path",
-                    path: path,
-                    fillcolor: "rgb(255, 255, 255)",
-                    line: {
-                      color: "rgb(0, 0, 0)"
-                    }
+            seat = {
+                type: "path",
+                path: path,
+                fillcolor: "rgb(255, 255, 255)",
+                line: {
+                    color: "rgb(0, 0, 0)"
                 }
-
-                shapes.push(seat)
             }
+
+            shapes.push(seat)
+
+            nameText = {
+                x: all_x[j],
+                y: all_y[j],
+                xref: 'x',
+                yref: 'y',
+                text: names[j],
+                showarrow: false
+            }
+
+            annotations.push(nameText)
         }
     }
     
@@ -164,7 +177,8 @@ function plotSeatingChart(radii, numSeats) {
             showgrid: false, 
             zeroline: false,
             visible: false
-        }
+        },
+        annotations: annotations
     }
 
     let config = { displayModeBar: false }

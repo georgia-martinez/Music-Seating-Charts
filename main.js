@@ -5,19 +5,42 @@ let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
 let createChartButton = document.getElementById("create-chart")
 
+class Row {
+    constructor(rowNum, seatInput, textArea) {
+        this.rowNum = rowNum
+        this.seatInput = seatInput
+        this.textArea = textArea
+    }
+
+    getRowNum() {
+        return this.rowNum
+    }
+
+    setRowNum(rowNum) {
+        this.rowNum = rowNum
+    }
+
+    getSeatInput() {
+        return this.seatInput
+    }
+
+    getTextArea() {
+        return this.textArea
+    }
+}
+
 var rowMap = new Map()
 
 function createChartBttn() {
-    let inputs = rowContainer.getElementsByTagName("input")
-
     let seatsPerRow = []
+    let namesPerRow = []
 
-    for(i = 0; i < inputs.length; i++) {
-        let currInput = inputs[i]
-        seatsPerRow.push(parseInt(currInput.value))
+    for(let row of rowMap.values()) {
+        seatsPerRow.push(parseInt(row.getSeatInput().value))
+        namesPerRow.push(row.getTextArea().value)
     }
 
-    createChart(seatsPerRow)
+    createChart(seatsPerRow, namesPerRow)
 }
 
 function removeRow(parentNode, rowText) {
@@ -45,8 +68,7 @@ function addRow() {
     textarea = document.createElement("textarea")
     textarea.rows = 20
     textarea.cols = 20
-
-    rowMap.set(rowText.innerText, textarea);
+    textarea.addEventListener("change", () => { createChartBttn() })
 
     // Input for the # of seats
     let seatInput = document.createElement("input")
@@ -54,6 +76,10 @@ function addRow() {
     seatInput.defaultValue = "0"
 
     seatInput.addEventListener("change", () => { createChartBttn() })
+
+    let newRow = new Row(rowText.innerText, seatInput, textarea)
+
+    rowMap.set(rowText.innerText, newRow)
 
     // Edit row button
     let editRowButton = document.createElement("button")
@@ -64,7 +90,7 @@ function addRow() {
             editContainer.removeChild(editContainer.firstChild);
         }
         
-        let nameBox = rowMap.get(rowText.innerText)
+        let nameBox = rowMap.get(rowText.innerText).getTextArea()
         nameBox.placeholder = rowText.innerText
 
         editContainer.appendChild(nameBox)
@@ -109,6 +135,8 @@ function renumberRows(rowText) {
     let count = 1
     for (const value of rowMap.values()) {
         let key = "Row " +count
+        value.setRowNum(key)
+
         newRowMap.set(key, value)
         count += 1
     }
