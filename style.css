@@ -7,3 +7,8 @@ body {
     display: flex;
     flex-direction: row;
 }
+
+.seating-chart {
+    width: 1000px;
+    height: 600px;
+}

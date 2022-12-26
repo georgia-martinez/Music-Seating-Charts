@@ -24,23 +24,50 @@ class Row {
         return this.seatInput
     }
 
+    getNumSeats() {
+        return this.seatInput.value;
+    }
+
     getTextArea() {
         return this.textArea
+    }
+
+    getNames() {
+        return this.textArea.value
     }
 }
 
 var rowMap = new Map()
+
+function getNames(namesPerRow, seatsPerRow) {
+    namesList = []
+
+    for(let i = 0; i < seatsPerRow.length; i++) {
+        let names = namesPerRow[i].split(/\n/)
+        let end = seatsPerRow[i] - names.length
+    
+        for(let j = 0; j < end; j++) {
+            names.push("")
+        }
+
+        namesList.push(names)
+    }
+
+    return namesList
+}
 
 function createChartBttn() {
     let seatsPerRow = []
     let namesPerRow = []
 
     for(let row of rowMap.values()) {
-        seatsPerRow.push(parseInt(row.getSeatInput().value))
-        namesPerRow.push(row.getTextArea().value)
+        seatsPerRow.push(parseInt(row.getNumSeats()))
+        namesPerRow.push(row.getNames())
     }
 
-    createChart(seatsPerRow, namesPerRow)
+    namesList = getNames(namesPerRow, seatsPerRow)
+
+    createChart(seatsPerRow, namesList)
 }
 
 function removeRow(parentNode, rowText) {
@@ -75,7 +102,7 @@ function addRow() {
     seatInput.setAttribute("type", "text")
     seatInput.defaultValue = "0"
 
-    seatInput.addEventListener("change", () => { createChartBttn() })
+    seatInput.addEventListener("change", function() { createChartBttn() })
 
     let newRow = new Row(rowText.innerText, seatInput, textarea)
 
@@ -104,8 +131,8 @@ function addRow() {
     rowDiv.appendChild(rowText)
     rowDiv.appendChild(seatInput)
     rowDiv.appendChild(editRowButton)
-    rowDiv.appendChild(removeRowButton)
-    
+    rowDiv.appendChild(removeRowButton)    
+
     removeRowButton.addEventListener("click", function() { removeRow(this.parentNode, rowText) })
 
     rowContainer.appendChild(rowDiv)
@@ -142,7 +169,5 @@ function renumberRows(rowText) {
     }
 
     rowMap = newRowMap
-
-    // TODO: if deleted row is the one currently selected, need to make sure the textbox is updated
 }
 

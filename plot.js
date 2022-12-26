@@ -108,17 +108,6 @@ function rotateY(x, y, x0, y0, theta) {
     return (x - x0) * Math.sin(theta) + (y - y0) * Math.cos(theta) + y0
 }
 
-function getNames(namesList, num) {
-    let names = namesList[i].split(/\n/)
-    let end = num - names.length
-
-    for(let i = 0; i < end; i++) {
-        names.push("")
-    }
-
-    return names
-}
-
 function plotSeatingChart(radii, numSeats, namesList) {
     let all_traces = []
     let shapes = []
@@ -129,7 +118,7 @@ function plotSeatingChart(radii, numSeats, namesList) {
         let r = radii[i]
         let n = numSeats[i]
 
-        let names = getNames(namesList, n)
+        let names = namesList[i]
 
         // Plot a black line for each row
         let rowLine = getTrace(r, 1000, true) 

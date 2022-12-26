@@ -22,9 +22,24 @@
     <button id="add-row">Add Row</button>
     <button id="create-chart">Create Chart</button>
 
-    <div id="seating-chart"></div>
+    <div class="flex">
+        <p>Save as: </p>
+        <select id="select-box">
+            <option>PNG</option>
+            <option>PDF</option>
+            <option>JSON</option>
+        </select>
+        <button id="save">Save</button>    
+    </div>
+
+    <div id="json">
+        <a id="a-tag"></a>
+    </div>
+
+    <div class="seating-chart" id="seating-chart"></div>
 
     <script src="plot.js"></script>
     <script src="main.js"></script>
+    <script src="json.js"></script>
 </body>
 </html>
