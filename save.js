@@ -1,18 +1,18 @@
-let saveButton = document.getElementById("save")
-let selectBox = document.getElementById("select-box")
+let saveButton = document.getElementById("save");
+let selectBox = document.getElementById("select-box");
 
 saveButton.addEventListener("click", function() {
-    let selected = selectBox.value
+    let selected = selectBox.value;
 
     switch(selected) {
         case "PNG":
-            saveToPNG()
+            saveToPNG();
             break
         case "PDF":
-            saveToPDF()
+            saveToPDF();
             break
         case "JSON":
-            saveToJSON()
+            saveToJSON();
     }
 })
 
@@ -34,7 +34,7 @@ function saveToPDF() {
  * Saves the seating chart as a JSON
  */
 function saveToJSON() {
-    let rows = []
+    let rows = [];
 
     for(let row of rowMap.values()) {
         curr_row = {
@@ -42,7 +42,7 @@ function saveToJSON() {
             numSeats: row.getNumSeats(),
             names: row.getNames()
         }
-        rows.push(curr_row)
+        rows.push(curr_row);
     }
 
     data = {
@@ -50,17 +50,17 @@ function saveToJSON() {
         "Rows": rows
     }
 
-    let jsonse = JSON.stringify(data, null, 2)
-    let blob = new Blob([jsonse], {type: "application/json"})
-    let url  = URL.createObjectURL(blob)
+    let jsonse = JSON.stringify(data, null, 2);
+    let blob = new Blob([jsonse], {type: "application/json"});
+    let url  = URL.createObjectURL(blob);
 
-    fileName = chartTitle.value.replace(/\s\s+/g, "_")
+    fileName = chartTitle.value.replace(/\s\s+/g, "_");
 
-    var a = document.getElementById("a-tag")
-    a.href = url
-    a.download = fileName+".json"
-    a.textContent = "Download " + a.download
+    var a = document.getElementById("a-tag");
+    a.href = url;
+    a.download = fileName+".json";
+    a.textContent = "Download " + a.download;
 
-    document.getElementById('json').appendChild(a)
+    document.getElementById('json').appendChild(a);
 }
     

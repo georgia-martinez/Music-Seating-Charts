@@ -28,17 +28,18 @@ function linspace(start, stop, num) {
  * Returns a list of evenly spaced (x, y) and theta values given a radius and a stepsize
  * 
  * @param {Number} radius radius
- * @param {*} stepSize number of points evenly spaced points to generate
+ * @param {Number} stepSize number of points evenly spaced points to generate
+ * @param {Boolean} flipChart gets bottom half of semicircle if true, otherwise gets the top half
  * @returns array containing [x, y, theta]
  */
-function getPoints(radius, stepSize) {
+function getPoints(radius, stepSize, flipChart) {
 
-    let theta = linspace(0, Math.PI, stepSize)
+    let theta = flipChart ? linspace(0, Math.PI, stepSize) : linspace(-Math.PI, 0, stepSize);
 
-    let x = theta.map(t => radius * Math.cos(t))
-    let y = theta.map(t => radius * Math.sin(t))
+    let x = theta.map(t => radius * Math.cos(t));
+    let y = theta.map(t => radius * Math.sin(t));
 
-    return [x, y, theta]
+    return [x, y, theta];
 }
 
 /**
@@ -49,11 +50,11 @@ function getPoints(radius, stepSize) {
  * @param {Boolean} line true to plot a line, false to plot markers
  * @returns a trace of a semicircle to plot
  */
-function getTrace(radius, stepSize, line=true) {
-    let points = getPoints(radius, stepSize)
+function getTrace(radius, stepSize, flipChart, line=true) {
+    let points = getPoints(radius, stepSize, flipChart);
 
-    let x = points[0]
-    let y = points[1] 
+    let x = points[0];
+    let y = points[1];
 
     let mode = line ? "lines" : "markers";
 
@@ -67,7 +68,7 @@ function getTrace(radius, stepSize, line=true) {
         }
     }
 
-    return trace
+    return trace;
 }
 
 /**
@@ -80,26 +81,26 @@ function getTrace(radius, stepSize, line=true) {
  * @returns Plotly formatted string representing the rotated square
  */
 function rotatedSquare(x, y, theta, len) {
-    let l = len/2
+    let l = len/2;
 
-    let rot_x = []
-    let rot_y = []
+    let rot_x = [];
+    let rot_y = [];
 
     // Rotate the four points of the square
     for(let x1 of [x - l, x + l]) {
         for(let y1 of [y - l, y + l]) {
-            rot_x.push((x1 - x) * Math.cos(theta) - (y1 - y) * Math.sin(theta) + x)
-            rot_y.push((x1 - x) * Math.sin(theta) + (y1 - y) * Math.cos(theta) + y)
+            rot_x.push((x1 - x) * Math.cos(theta) - (y1 - y) * Math.sin(theta) + x);
+            rot_y.push((x1 - x) * Math.sin(theta) + (y1 - y) * Math.cos(theta) + y);
         }
     }
 
     // Index 2 and 3 are swapped so the square is drawn correctly
-    x0 = rot_x[0], x1 = rot_x[1], x2 = rot_x[3], x3 = rot_x[2]
-    y0 = rot_y[0], y1 = rot_y[1], y2 = rot_y[3], y3 = rot_y[2]
+    x0 = rot_x[0], x1 = rot_x[1], x2 = rot_x[3], x3 = rot_x[2];
+    y0 = rot_y[0], y1 = rot_y[1], y2 = rot_y[3], y3 = rot_y[2];
 
-    let format = `M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`
+    let format = `M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`;
 
-    return format
+    return format;
 }
 
 /**
@@ -110,15 +111,15 @@ function rotatedSquare(x, y, theta, len) {
  * @returns array of radii corresponding to each row
  */
 function getRadii(R, numSeats) {
-    let x = R
-    let radii = [R]
+    let x = R;
+    let radii = [R];
 
     for(i = 1; i < numSeats.length; i++) {
-        x += R
-        radii.push(x)
+        x += R;
+        radii.push(x);
     }
 
-    return radii
+    return radii;
 }
 
 /**
@@ -128,36 +129,37 @@ function getRadii(R, numSeats) {
  * @param {Array.<Number>} radii 
  * @param {Array.<Number>} numSeats 
  * @param {Array.<Array.<String>>} namesList array of arrays containing the names for each row
+ * @param {Boolean} flipChart plots the bottom half of semicircle if true, otherwise plots the top half
  */
-function plotSeatingChart(title, numSeats, namesList, showPodium) {
-    let all_traces = []
-    let shapes = []
-    let annotations = []
-    let radii = getRadii(3, numSeats)
+function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
+    let all_traces = [];
+    let shapes = [];
+    let annotations = [];
+    let radii = getRadii(3, numSeats);
 
     // Iterate through every radius value
     for(i = 0; i < radii.length; i++) {
-        let r = radii[i]
-        let n = numSeats[i]
+        let r = radii[i];
+        let n = numSeats[i];
 
-        let names = namesList[i]
+        let names = namesList[i];
 
         // Plot a black line for each row
-        let rowLine = getTrace(r, 1000, true) 
-        all_traces.push(rowLine)
+        let rowLine = getTrace(r, 1000, flipChart, true);
+        all_traces.push(rowLine);
 
         if(n == 0) {
-            continue
+            continue;
         }
 
         // Iterate through every seat
-        let points = getPoints(r, n)
-        let all_x = points[0]
-        let all_y = points[1] 
-        let all_theta = points[2]
+        let points = getPoints(r, n, flipChart);
+        let all_x = points[0];
+        let all_y = points[1] ;
+        let all_theta = points[2];
 
         for(j = 0; j < all_x.length; j++) {
-            let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], 1)
+            let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], 1);
 
             seat = {
                 type: "path",
@@ -166,7 +168,7 @@ function plotSeatingChart(title, numSeats, namesList, showPodium) {
                 line: { color: "rgb(0, 0, 0)" }
             }
 
-            shapes.push(seat)
+            shapes.push(seat);
 
             nameText = {
                 x: all_x[j],
@@ -180,16 +182,16 @@ function plotSeatingChart(title, numSeats, namesList, showPodium) {
                 bgcolor: "#ffffff"
             }
 
-            annotations.push(nameText)
+            annotations.push(nameText);
         }
     }
     
     // Plot the podium 
     if(showPodium) {
-        podium = getPodium()
+        podium = getPodium();
 
-        shapes.push(podium[0])
-        annotations.push(podium[1])
+        shapes.push(podium[0]);
+        annotations.push(podium[1]);
     }
 
     let layout = {
@@ -217,13 +219,13 @@ function plotSeatingChart(title, numSeats, namesList, showPodium) {
         responsive: true 
     }
 
-    Plotly.newPlot(SEATINGCHART, all_traces, layout, config) 
+    Plotly.newPlot(SEATINGCHART, all_traces, layout, config);
 }
 
 function getPodium() {
 
-    let width = 2
-    let height = 1
+    let width = 2;
+    let height = 1;
 
     let podium = {
         type: 'rect',
@@ -247,6 +249,6 @@ function getPodium() {
         bgcolor: "#ffffff"
     }
 
-    return [podium, text]
+    return [podium, text];
 }
 
