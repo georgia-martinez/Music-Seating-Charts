@@ -5,9 +5,11 @@ let editContainer = document.getElementById("edit-container")
 let addRowButton = document.getElementById("add-row")
 let chartTitle = document.getElementById("chart-title")
 let editRowText = document.getElementById("edit-row-text")
+let showPodiumNode = document.getElementById("show-podium")
 
 addRowButton.addEventListener("click", function() { addRow() })
 chartTitle.addEventListener("change", function() { createChart() })
+showPodiumNode.addEventListener("change", function() { createChart() })
 
 /**
  * Stores the row number ("Row 1"), a seat input Node, and a name text area Node for the corresponding row
@@ -25,6 +27,10 @@ class Row {
 
     getNumSeats() {
         return this.seatInput.value;
+    }
+
+    getTextArea() {
+        return this.textArea;
     }
 
     getNames() {
@@ -48,7 +54,9 @@ function createChart() {
 
     namesList = getNames(namesPerRow, seatsPerRow)
 
-    plotSeatingChart(chartTitle.value, seatsPerRow, namesList)
+    let showPodium = showPodiumNode.checked
+
+    plotSeatingChart(chartTitle.value, seatsPerRow, namesList, showPodium)
 }
 
 /**

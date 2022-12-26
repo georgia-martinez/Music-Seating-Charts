@@ -129,7 +129,7 @@ function getRadii(R, numSeats) {
  * @param {Array.<Number>} numSeats 
  * @param {Array.<Array.<String>>} namesList array of arrays containing the names for each row
  */
-function plotSeatingChart(title, numSeats, namesList) {
+function plotSeatingChart(title, numSeats, namesList, showPodium) {
     let all_traces = []
     let shapes = []
     let annotations = []
@@ -184,6 +184,14 @@ function plotSeatingChart(title, numSeats, namesList) {
         }
     }
     
+    // Plot the podium 
+    if(showPodium) {
+        podium = getPodium()
+
+        shapes.push(podium[0])
+        annotations.push(podium[1])
+    }
+
     let layout = {
         title: { text:title },
         autosize: true,
@@ -210,5 +218,35 @@ function plotSeatingChart(title, numSeats, namesList) {
     }
 
     Plotly.newPlot(SEATINGCHART, all_traces, layout, config) 
+}
+
+function getPodium() {
+
+    let width = 2
+    let height = 1
+
+    let podium = {
+        type: 'rect',
+        x0: -width/2,
+        y0: -height/2,
+        x1: width/2,
+        y1: height/2,
+        fillcolor: "rgb(255, 255, 255)",
+        line: { color: "rgb(0, 0, 0)" }
+    }
+
+    let text = {
+        x: 0,
+        y: 0,
+        xref: "x",
+        yref: "y",
+        text: "Podium",
+        showarrow: false,
+        borderwidth: 1,
+        borderpad: 1,
+        bgcolor: "#ffffff"
+    }
+
+    return [podium, text]
 }
 
