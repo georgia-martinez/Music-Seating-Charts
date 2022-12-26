@@ -16,6 +16,8 @@ function getPoints(radius, stepSize) {
     let x = theta.map(t => radius * Math.cos(t))
     let y = theta.map(t => radius * Math.sin(t))
 
+    console.log([x, y, theta])
+
     return [x, y, theta]
 }
 
@@ -78,8 +80,8 @@ function rotatedSquare(x, y, theta, len) {
     let rot_y = []
 
     for(let i = 0; i < all_x.length; i++) {
-        rot_x.push(rotateX(all_x[i], all_y[i], theta))
-        rot_y.push(rotateY(all_x[i], all_y[i], theta))
+        rot_x.push(rotateX(all_x[i], all_y[i], x, y, theta))
+        rot_y.push(rotateY(all_x[i], all_y[i], x, y, theta))
     }
 
     x0 = rot_x[0]
@@ -96,12 +98,12 @@ function rotatedSquare(x, y, theta, len) {
     return format
 }
 
-function rotateX(x, y, theta) {
-    return x * Math.cos(theta) - y * Math.sin(theta)
+function rotateX(x, y, x0, y0, theta) {
+    return (x - x0) * Math.cos(theta) - (y - y0) * Math.sin(theta) + x0
 }
 
-function rotateY(x, y, theta) {
-    return x * Math.sin(theta) + y * Math.cos(theta)
+function rotateY(x, y, x0, y0, theta) {
+    return (x - x0) * Math.sin(theta) + (y - y0) * Math.cos(theta) + y0
 }
 
 function plotSeatingChart(radii, numSeats) {
@@ -124,13 +126,16 @@ function plotSeatingChart(radii, numSeats) {
             continue
         }
 
+        let seatThings = getTrace(r, n, false) 
+        all_traces.push(seatThings)
+
+        let points = getPoints(r, n)
+
         for(j = 0; j < n; j++) {        
-            let points = getPoints(r, n)
-            console.log(points)
 
             let all_x = points[0]
             let all_y = points[1] 
-            let all_theta = points[2].map(p => p * (180.0 / Math.PI))
+            let all_theta = points[2]
 
             for(k = 0; k < all_x.length; k++) {
                 let path = rotatedSquare(all_x[k], all_y[k], all_theta[k], 1)
