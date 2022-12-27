@@ -182,12 +182,12 @@ function removeRow(parentNode, rowText) {
  * 
  * @param {String} startRow the row to start renumbering from (e.g. "Row 1")
  */
-function renumberRows(startRow="Row 1") {
+function renumberRows(startRow) {
     let allRowText = rowContainer.getElementsByTagName("p");
 
     let start = parseInt(startRow.slice(-1)) - 1;
 
-    for(i = startRow; i < allRowText.length; i++) {
+    for(i = start; i < allRowText.length; i++) {
         let row = allRowText[i];
         row.innerText = "Row " +(i+1);
     }
@@ -210,7 +210,7 @@ function renumberRows(startRow="Row 1") {
 const form = document.getElementById("myForm");
 const file = document.getElementById("myFile");
 
-form.addEventListener("submit", e => {
+form.addEventListener("change", e => {
     e.preventDefault();
 
     let reader = new FileReader();
