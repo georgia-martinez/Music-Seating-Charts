@@ -210,6 +210,10 @@ function renumberRows(startRow) {
 const form = document.getElementById("myForm");
 const file = document.getElementById("myFile");
 
+file.addEventListener("click", function() {
+    this.value = null;
+})
+
 form.addEventListener("change", e => {
     e.preventDefault();
 
