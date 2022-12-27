@@ -20,14 +20,14 @@ saveButton.addEventListener("click", function() {
  * Saves the seating chart as a PNG
  */
 function saveToPNG() {
-    downloadPNG(getFileName(chartTitle.value), "png");
+    downloadChart(getFileName(chartTitle.value), "png");
 }
 
 /**
  * Saves the seating chart as a PDF
  */
 function saveToJPEG() {
-    downloadPNG(getFileName(chartTitle.value), "jpeg");
+    downloadChart(getFileName(chartTitle.value), "jpeg");
 }
 
 /**

@@ -87,16 +87,23 @@ function rotatedSquare(x, y, theta, len) {
     let rot_y = [];
 
     // Rotate the four points of the square
-    for(let x1 of [x - l, x + l]) {
-        for(let y1 of [y - l, y + l]) {
-            rot_x.push((x1 - x) * Math.cos(theta) - (y1 - y) * Math.sin(theta) + x);
-            rot_y.push((x1 - x) * Math.sin(theta) + (y1 - y) * Math.cos(theta) + y);
+    for(let xVal of [x - l, x + l]) {
+        for(let yVal of [y - l, y + l]) {
+            rot_x.push((xVal - x) * Math.cos(theta) - (yVal - y) * Math.sin(theta) + x);
+            rot_y.push((xVal - x) * Math.sin(theta) + (yVal - y) * Math.cos(theta) + y);
         }
     }
 
     // Index 2 and 3 are swapped so the square is drawn correctly
-    x0 = rot_x[0], x1 = rot_x[1], x2 = rot_x[3], x3 = rot_x[2];
-    y0 = rot_y[0], y1 = rot_y[1], y2 = rot_y[3], y3 = rot_y[2];
+    let x0 = rot_x[0];
+    let x1 = rot_x[1];
+    let x2 = rot_x[3];
+    let x3 = rot_x[2];
+
+    let y0 = rot_y[0];
+    let y1 = rot_y[1];
+    let y2 = rot_y[3];
+    let y3 = rot_y[2];
 
     let format = `M ${x0} ${y0} L ${x1} ${y1} L ${x2} ${y2} L ${x3} ${y3} Z`;
 
@@ -222,6 +229,9 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
     Plotly.newPlot(SEATINGCHART, all_traces, layout, config);
 }
 
+/**
+ * @returns an array containing the podium shape first and the text second
+ */
 function getPodium() {
 
     let width = 2;
@@ -252,7 +262,13 @@ function getPodium() {
     return [podium, text];
 }
 
-function downloadPNG(fileName, imageFormat) {
+/**
+ * Downloads the chart as an image
+ * 
+ * @param {*} fileName name of the file
+ * @param {*} imageFormat image format to save the file (e.g. png or jpeg)
+ */
+function downloadChart(fileName, imageFormat) {
     Plotly.newPlot(SEATINGCHART, SEATINGCHART.data, SEATINGCHART.layout, SEATINGCHART.config)
     .then(function(download) {
         Plotly.downloadImage(download, {

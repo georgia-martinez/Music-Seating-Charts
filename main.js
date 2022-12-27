@@ -1,12 +1,12 @@
 let numRows = 0;
 
-let rowContainer = document.getElementById("row-container");
-let editContainer = document.getElementById("edit-container");
-let addRowButton = document.getElementById("add-row");
-let chartTitle = document.getElementById("chart-title");
-let editRowText = document.getElementById("edit-row-text");
-let showPodium = document.getElementById("show-podium");
-let flipChart = document.getElementById("flip-chart");
+const rowContainer = document.getElementById("row-container");
+const editContainer = document.getElementById("edit-container");
+const addRowButton = document.getElementById("add-row");
+const chartTitle = document.getElementById("chart-title");
+const editRowText = document.getElementById("edit-row-text");
+const showPodium = document.getElementById("show-podium");
+const flipChart = document.getElementById("flip-chart");
 
 addRowButton.addEventListener("click", function() { addRow() });
 chartTitle.addEventListener("change", function() { createChart() });
@@ -201,6 +201,28 @@ function renumberRows(rowText) {
     }
 
     rowMap = newRowMap;
+}
+
+const form = document.getElementById("myForm");
+const file = document.getElementById("myFile");
+
+form.addEventListener("submit", e => {
+    e.preventDefault();
+
+    let reader = new FileReader();
+
+    reader.onload = function() {
+        let fileContent = JSON.parse(reader.result);
+        loadJSON(fileContent);
+    };
+    reader.readAsText(file.files[0]);
+
+});
+
+function loadJSON(json) {
+    for(let key in json) {
+        console.log(key);
+    }
 }
 
 /**

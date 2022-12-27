@@ -9,9 +9,9 @@
 </head>
 <body>
     <!-- Upload a chart -->
-    <form method="POST" enctype="multipart/form-data" action="/">
-        <input type="file" id="myFile" name="uploaded-file" accept=".json">
-        <input type="submit" name="upload_file" value="Upload file">
+    <form class="form" enctype="multipart/form-data" action="/uploads/" method="post" id="myForm">
+        <input type="file" id="myFile" accept=".json">
+        <button type="submit">Upload File</button>
     </form>
 
     <div class="flex flex-item">
