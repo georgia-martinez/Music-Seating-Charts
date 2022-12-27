@@ -1,4 +1,4 @@
-let numRows = 0;
+var numRows = 0;
 
 const rowContainer = document.getElementById("row-container");
 const editContainer = document.getElementById("edit-container");
@@ -31,6 +31,10 @@ class Row {
         this.rowNumStr = rowNumStr;
     }
 
+    getSeatInput() {
+        return this.seatInput;
+    }
+
     getNumSeats() {
         return this.seatInput.value;
     }
@@ -44,7 +48,7 @@ class Row {
     }
 }
 
-var rowMap = new Map() // Maps the row text ("Row 1") to a Row object
+var rowMap = new Map(); // Maps the row text ("Row 1") to a Row object
 
 /**
  * Creates the seating chart
@@ -176,14 +180,14 @@ function removeRow(parentNode, rowText) {
 /**
  * Renumbers the rows when a row is deleted so the row numbers are alwaus continous (e.g. 1, 2, 3, 4, etc.)
  * 
- * @param {String} rowText e.g. "Row 1"
+ * @param {String} startRow the row to start renumbering from (e.g. "Row 1")
  */
-function renumberRows(rowText) {
+function renumberRows(startRow="Row 1") {
     let allRowText = rowContainer.getElementsByTagName("p");
 
-    let start = parseInt(rowText.slice(-1)) - 1;
+    let start = parseInt(startRow.slice(-1)) - 1;
 
-    for(i = start; i < allRowText.length; i++) {
+    for(i = startRow; i < allRowText.length; i++) {
         let row = allRowText[i];
         row.innerText = "Row " +(i+1);
     }
@@ -216,12 +220,46 @@ form.addEventListener("submit", e => {
         loadJSON(fileContent);
     };
     reader.readAsText(file.files[0]);
-
 });
 
 function loadJSON(json) {
-    for(let key in json) {
-        console.log(key);
+    chartTitle.value = json["Chart Title"];
+    showPodium.checked = json["Show Podium"];
+    flipChart.checked = json["Flip Chart"];
+
+    resetRows();
+
+    for(let row of json["Rows"]) {
+        rowNum = row["rowNum"];
+
+        if(!(rowNum in rowMap)) {
+            addRow();
+        }
+
+        rowNum = row["rowNum"];
+        rowObj = rowMap.get(rowNum);
+        
+        rowObj.getSeatInput().value = row["numSeats"];
+        rowObj.getTextArea().value = row["names"];
+    }
+
+    editRow("Row 1");
+    createChart();
+}
+
+function resetRows() {
+    numRows = 0;
+
+    for(let key of rowMap.keys()) {
+        rowMap.delete(key);
+    }
+
+    while (rowContainer.firstChild) {
+        rowContainer.removeChild(rowContainer.firstChild);
+    }
+
+    while (editContainer.firstChild) {
+        editContainer.removeChild(editContainer.firstChild);
     }
 }
 

@@ -47,6 +47,8 @@ function saveToJSON() {
 
     data = {
         "Chart Title": chartTitle.value,
+        "Show Podium": showPodium.checked,
+        "Flip Chart": flipChart.checked,
         "Rows": rows
     }
 

@@ -3,9 +3,9 @@ SEATINGCHART = document.getElementById("seating-chart")
 /**
  * Returns num evenly spaced points, calculated over the interval [start, stop] where the endpoint is incuded
  * 
- * @param {*} start starting value
- * @param {*} stop end value
- * @param {*} num number of points to generate
+ * @param {Number} start starting value
+ * @param {Number} stop end value
+ * @param {Number} num number of points to generate
  * @returns num evenly spaced points
  */
 function linspace(start, stop, num) {
