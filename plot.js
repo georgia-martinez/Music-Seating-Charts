@@ -11,14 +11,10 @@ SEATINGCHART = document.getElementById("seating-chart")
 function linspace(start, stop, num) {
     let arr = []
 
-    if(num != 1) {
-        let step = (start - stop) / (num - 1)
+    let step = (start - stop) / (num - 1)
 
-        for (let i = 0; i < num; i++) {
-          arr.push(start + (step * i))
-        }
-    } else {
-        arr.push(3*Math.PI/2)
+    for (let i = 0; i < num; i++) {
+        arr.push(start + (step * i))
     }
 
     return arr
@@ -34,7 +30,13 @@ function linspace(start, stop, num) {
  */
 function getPoints(radius, stepSize, flipChart) {
 
-    let theta = flipChart ? linspace(0, Math.PI, stepSize) : linspace(-Math.PI, 0, stepSize);
+    let theta;
+
+    if(stepSize != 1) {
+        theta = flipChart ? linspace(0, Math.PI, stepSize) : linspace(-Math.PI, 0, stepSize);
+    } else {
+        theta = flipChart ? [3*Math.PI/2] : [Math.PI/2];
+    }
 
     let x = theta.map(t => radius * Math.cos(t));
     let y = theta.map(t => radius * Math.sin(t));
