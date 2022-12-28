@@ -26,3 +26,11 @@ body {
     align-items: center;
     margin-bottom: 5px;
 }
+
+h1 {
+    margin-bottom: 0px;
+}
+
+input[type=checkbox] {
+    margin-right: 5px;
+}

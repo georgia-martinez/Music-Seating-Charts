@@ -117,9 +117,16 @@ function addRow() {
     // Input for the # of seats
     let seatInput = document.createElement("input");
     seatInput.setAttribute("type", "text");
-    seatInput.defaultValue = "0";
+    seatInput.maxLength = 2;
+    seatInput.value = 0;
 
-    seatInput.addEventListener("change", function() { createChart() });
+    seatInput.addEventListener("change", function() {
+        if(seatInput.value.length == 0) {
+            seatInput.value = 0;
+        }
+        
+        createChart(); 
+    });
 
     let newRow = new Row(rowText.innerText, seatInput, textarea);
 
