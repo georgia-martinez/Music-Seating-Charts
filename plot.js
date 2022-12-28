@@ -113,20 +113,24 @@ function rotatedSquare(x, y, theta, len) {
 }
 
 /**
- * Returns an array of numbers specifying the radius value for each row
+ * Returns an array of equally spaced numbers representing the radius value for each row. The radius automatically scales to best fit the number of seats in each row. 
  * 
- * @param {*} R length between each row
  * @param {Array.<Number>} numSeats number of seats for each row 
  * @returns array of radii corresponding to each row
  */
-function getRadii(R, numSeats) {
-    let x = R;
-    let radii = [R];
+function getRadii(numSeats) {
+    let max = Math.max.apply(Math, numSeats);
 
-    for(i = 1; i < numSeats.length; i++) {
-        x += R;
+    let R = max < 6 ? 3 : Math.round(((max / Math.PI) * 1.5));
+    let x = R;
+    let radii = [];
+
+    for(i = 0; i < numSeats.length; i++) {
         radii.push(x);
+        x += 3;
     }
+
+    console.log(radii);
 
     return radii;
 }
@@ -144,7 +148,7 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
     let all_traces = [];
     let shapes = [];
     let annotations = [];
-    let radii = getRadii(3, numSeats);
+    let radii = getRadii(numSeats);
 
     // Iterate through every radius value
     for(i = 0; i < radii.length; i++) {

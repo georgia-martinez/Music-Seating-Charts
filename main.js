@@ -214,6 +214,7 @@ file.addEventListener("click", function() {
     this.value = null;
 })
 
+// Read the JSON file
 form.addEventListener("change", e => {
     e.preventDefault();
 
@@ -226,6 +227,11 @@ form.addEventListener("change", e => {
     reader.readAsText(file.files[0]);
 });
 
+/**
+ * Reads the given JSON and recreates the saved seating chart
+ * 
+ * @param {Object} json object containing the JSON contents
+ */
 function loadJSON(json) {
     chartTitle.value = json["Chart Title"];
     showPodium.checked = json["Show Podium"];
@@ -251,6 +257,9 @@ function loadJSON(json) {
     createChart();
 }
 
+/**
+ * Resets the row map and deletes all rows from the GUI
+ */
 function resetRows() {
     numRows = 0;
 
