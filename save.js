@@ -58,7 +58,7 @@ function saveToJSON() {
 
     let fileName = getFileName(chartTitle.value);
 
-    var a = document.getElementById("a-tag");
+    let a = document.createElement("a");
     a.href = url;
     a.download = fileName+".json";
 

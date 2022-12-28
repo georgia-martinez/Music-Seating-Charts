@@ -169,10 +169,12 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
         let all_y = points[1] ;
         let all_theta = points[2];
 
-        for(j = 0; j < all_x.length; j++) {
-            let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], 1);
+        let seatLen = parseInt(seatSizeText.innerText.slice(0, -1)) / 100;
 
-            seat = {
+        for(j = 0; j < all_x.length; j++) {
+            let path = rotatedSquare(all_x[j], all_y[j], all_theta[j], seatLen);
+
+            let seat = {
                 type: "path",
                 path: path,
                 fillcolor: "rgb(255, 255, 255)",
@@ -181,12 +183,16 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
 
             shapes.push(seat);
 
-            nameText = {
+            let nameText = {
                 x: all_x[j],
                 y: all_y[j],
                 xref: "x",
                 yref: "y",
                 text: names[j],
+                font: { 
+                    color: "black", 
+                    size: 12 
+                },
                 showarrow: false,
                 bgcolor: "#ffffff"
             }
@@ -212,13 +218,14 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
             showgrid: false, 
             zeroline: false,
             visible: false,
-            fixedrange: true
+            fixedrange: true,
+            scaleanchor: "y"
         },
         yaxis: {
             showgrid: false, 
             zeroline: false,
             visible: false,
-            fixedrange: true
+            fixedrange: true,
         },
         annotations: annotations
     }
@@ -234,7 +241,7 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
 /**
  * Returns a rectangle representing a podium that says podium on it
  * 
- * @param {*} startRadius radius of the first row for adjusting the size
+ * @param {Number} startRadius radius of the first row for adjusting the size
  * @returns an array containing the podium shape first and the text second
 */
 function getPodium(startRadius) {
@@ -248,7 +255,7 @@ function getPodium(startRadius) {
         y0: -height/2,
         x1: width/2,
         y1: height/2,
-        fillcolor: "rgb(255, 255, 255)",
+        // fillcolor: "rgb(255, 255, 255)",
         line: { color: "rgb(0, 0, 0)" }
     }
 
@@ -270,8 +277,8 @@ function getPodium(startRadius) {
 /**
  * Downloads the chart as an image
  * 
- * @param {*} fileName name of the file
- * @param {*} imageFormat image format to save the file (e.g. png or jpeg)
+ * @param {String} fileName name of the file
+ * @param {String} imageFormat image format to save the file (e.g. png or jpeg)
  */
 function downloadChart(fileName, imageFormat) {
     Plotly.newPlot(SEATINGCHART, SEATINGCHART.data, SEATINGCHART.layout, SEATINGCHART.config)

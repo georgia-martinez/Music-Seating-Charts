@@ -276,12 +276,36 @@ function resetRows() {
     }
 }
 
+const seatSizeText = document.getElementById("seat-size");
+const incrSeatSize = document.getElementById("incr-seat");
+const decrSeatSize = document.getElementById("decr-seat");
+
+let seatSize;
+
+incrSeatSize.addEventListener("click", function() {
+    if(seatSize < 200) {
+        setSeatSizeText(seatSize + 10);
+    }
+});
+
+decrSeatSize.addEventListener("click", function() {
+    if(seatSize > 50) {
+        setSeatSizeText(seatSize - 10);
+    }
+});
+
+function setSeatSizeText(size) {
+    seatSize = size;
+    seatSizeText.innerText = `${size}%`;
+    createChart();
+}
+
 /**
  * To be called when the site is first loaded/reloaded
  */
-function main() {
+window.onload = function() {
     addRow();
     editRow("Row 1");
-}
 
-main();
+    setSeatSizeText(100);
+};
