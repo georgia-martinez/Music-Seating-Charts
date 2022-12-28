@@ -8,43 +8,55 @@
     <script src="https://cdn.plot.ly/plotly-2.16.1.min.js"></script>
 </head>
 <body>
-    <!-- Upload a chart -->
-    <form class="form" enctype="multipart/form-data" action="/uploads/" method="post" id="myForm">
-        <input type="file" id="myFile" accept=".json">
-    </form>
-
-    <!-- Insert chart name -->
-    <div class="flex flex-item">
-        <p> Seating Chart Name: </p>
-        <input type="text" id="chart-title" value="My Seating Chart">
-    </div>
-
-    <!-- Edit rows -->
+    <h1>Music Seating Chart Creator</h1>
+    
     <div class="flex">
-        <div class="flex-col">
-            <div id="row-container"></div>
-            <button id="add-row">Add Row</button>
-        </div>
+        <!-- Editing panel -->
         <div>
-            <p id="edit-row-text">Row # Names:</p>
-            <div id="edit-container"></div>
-            <div class="flex-col">
-                <div class="flex flex-item">
-                    <p>Seat Size: </p>
-                    <p id="seat-size"></p>
-                    <button id="decr-seat">-</button>
-                    <button id="incr-seat">+</button>
+            <!-- Upload a chart -->
+            <div class="flex" id="upload">
+                <p>Load a saved chart (should end in .JSON)</p>
+                <form class="form" enctype="multipart/form-data" action="/uploads/" method="post" id="myForm">
+                    <input type="file" id="myFile" accept=".json">
+                </form>
+            </div>
+
+            <!-- Insert chart name -->
+            <div class="flex">
+                <p> Seating Chart Name: </p>
+                <input type="text" id="chart-title" value="My Seating Chart">
+            </div>
+
+            <!-- Edit rows -->
+            <div class="flex">
+                <div class="flex-col">
+                    <div id="row-container"></div>
+                    <button id="add-row">Add Row</button>
                 </div>
-                <label><input id="show-podium" type="checkbox">Show Podium</label>
-                <label><input id="flip-chart" type="checkbox">Flip Chart</label>
+                <div>
+                    <p id="edit-row-text">Row # Names:</p>
+                    <div id="edit-container"></div>
+                    <div class="flex-col">
+                        <div class="flex">
+                            <p>Seat Size: </p>
+                            <p id="seat-size"></p>
+                            <button id="decr-seat">-</button>
+                            <button id="incr-seat">+</button>
+                        </div>
+                        <label><input id="show-podium" type="checkbox">Show Podium</label>
+                        <label><input id="flip-chart" type="checkbox">Flip Chart</label>
+                    </div>
+                </div>
             </div>
         </div>
+
         <!-- Plotly chart -->
         <div class="seating-chart" id="seating-chart"></div>
     </div>
 
     <!-- Save chart -->
-    <div class="flex flex-item">
+    <p>To save this chart to edit later, select save as JSON below.</p>
+    <div class="flex">
         <p>Save as: </p>
         <select id="select-box">
             <option>PNG</option>

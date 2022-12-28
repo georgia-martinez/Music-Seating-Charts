@@ -9,8 +9,8 @@ body {
     gap: 5px;
 }
 
-.flex-item {
-    align-items: center;
+.flex * {
+    margin: 3px 0px;    
 }
 
 .flex-col {
@@ -22,7 +22,7 @@ body {
     width: 30%;
 }
 
-.seating-chart {
-    height: 100%;
-    width: 60%;
+#upload {
+    align-items: center;
+    margin-bottom: 5px;
 }

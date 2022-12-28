@@ -99,10 +99,11 @@ function addRow() {
     // Div for each row
     let rowDiv = document.createElement("div");
     rowDiv.classList.add("flex");
-    rowDiv.classList.add("flex-item");
+    // rowDiv.classList.add("flex-item");
 
     // Row text
     let rowText = document.createElement("p");
+    // rowText.classList.add("flex-item");
 
     numRows += 1;
     rowText.innerText = "Row " +numRows;
@@ -127,12 +128,14 @@ function addRow() {
     // Edit row button
     let editRowButton = document.createElement("button");
     editRowButton.textContent = "Edit";
+    // editRowButton.classList.add("flex-item");
 
     editRowButton.addEventListener("click", function() { editRow(rowText.innerText) });
 
     // Remove row button
     let removeRowButton = document.createElement("button");
     removeRowButton.textContent = "X";
+    // removeRowButton.classList.add("flex-item");
 
     rowDiv.appendChild(rowText);
     rowDiv.appendChild(seatInput);
