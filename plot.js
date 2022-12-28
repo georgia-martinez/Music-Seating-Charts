@@ -130,8 +130,6 @@ function getRadii(numSeats) {
         x += 3;
     }
 
-    console.log(radii);
-
     return radii;
 }
 
@@ -190,8 +188,6 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
                 yref: "y",
                 text: names[j],
                 showarrow: false,
-                borderwidth: 1,
-                borderpad: 1,
                 bgcolor: "#ffffff"
             }
 
@@ -201,14 +197,14 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
     
     // Plot the podium 
     if(showPodium) {
-        podium = getPodium();
+        podium = getPodium(radii[0]);
 
         shapes.push(podium[0]);
         annotations.push(podium[1]);
     }
 
     let layout = {
-        title: { text:title },
+        title: { text: `<b>${title}<b>` },
         autosize: true,
         showlegend: false,
         shapes: shapes,
@@ -236,12 +232,15 @@ function plotSeatingChart(title, numSeats, namesList, showPodium, flipChart) {
 }
 
 /**
+ * Returns a rectangle representing a podium that says podium on it
+ * 
+ * @param {*} startRadius radius of the first row for adjusting the size
  * @returns an array containing the podium shape first and the text second
- */
-function getPodium() {
+*/
+function getPodium(startRadius) {
 
-    let width = 2;
-    let height = 1;
+    let width = (startRadius * 2) / 3;
+    let height = width/2;
 
     let podium = {
         type: 'rect',
